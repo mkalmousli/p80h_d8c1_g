@@ -84,6 +84,13 @@ Normal in the physical boot menu restores Linux; falsifier: daemon unavailable
 after its normal boot interval. Reattempt the timed ROM probe only during a new
 controlled reboot, and send WDT reset only after fresh MT8163/security reads.
 
+Recovery: owner selected Normal in the physical boot menu; the original daemon
+responded again. Next hypothesis: start `rom-reset --wait` before an orderly
+reboot, so it receives a fresh preloader session, validates MT8163/security, and
+returns the existing Linux daemon. Falsifier: query does not complete, reset is
+rejected, or the daemon does not respond within 60 seconds. No command is sent
+from a stale USB enumeration.
+
 ## 2026-10-29T19:28:18Z / 003 / upstream audit result
 
 Official kernel.org archive hash matched its published checksum. ARM64 tinyconfig
