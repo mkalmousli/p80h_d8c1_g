@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 #include "src/boot/menu.h"
-#include "tools/image.h"
+#include "src/host/image.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>

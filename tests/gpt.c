@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MIT */
-#include "tools/gpt.h"
+#include "src/host/gpt.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>

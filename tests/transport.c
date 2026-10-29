@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT */
 #define _POSIX_C_SOURCE 200809L
-#include "tools/net.h"
+#include "src/host/net.h"
 #include <arpa/inet.h>
 #include <assert.h>
 #include <signal.h>

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 #define _POSIX_C_SOURCE 200809L
 #include "src/link/server.h"
-#include "tools/link-client.h"
+#include "src/host/link-client.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,18 +1,31 @@
 # P80h
 
-Open boot-platform research for the Teclast P80h (MT8163). The goal is direct
-Alpine boot from a native C boot manager. There is no replacement firmware yet.
+Open boot-platform research for the Teclast P80h (MT8163). Goal: boot Alpine
+directly through a native C boot manager. The installed system is preserved;
+there is no replacement firmware or native Alpine boot yet.
 
-The host tool is C: `p80h features` lists the current driver evidence and next
-acceptance gates; `p80h rom-info` queries the MediaTek boot path; `p80h` uses the
-versioned P80H/1 USB link. The device agent is temporary in RAM.
+## Feature status
 
-The processor's mask ROM is fixed silicon code. The project can replace writable
-stages after it, but cannot rewrite the physical ROM. No boot partition has been
-changed by this project. See the [roadmap](docs/plan.md), [current status](docs/status.md)
-and [remote build instructions](docs/development.md).
+| State | Count | Current evidence |
+|---|---:|---|
+| Verified | 1 | USB gadget and versioned P80H/1 binary link; boot-region read |
+| Implemented | 1 | C boot selection and timeout policy |
+| Observed | 16 | Drivers bind or hardware is identified; many functions lack acceptance tests |
+| Blocked | 3 | Wi-Fi, Bluetooth, GPU: open driver or firmware path unproven |
+| Planned | 9 | DRAM init, CPU frequency, FM, video, cameras, suspend, ROM stage, secure monitor, Alpine boot |
 
-Build only in Codespaces or GitHub Actions:
+Linux 7.3 tinyconfig builds, but exact MT8163 board support is missing from the
+audited tree. A live private eMMC read is underway; it is not a coherent backup
+or restore proof. No boot partition has been changed. The silicon mask ROM is
+fixed; replacement work can cover writable stages after it. Detailed driver
+evidence and acceptance gates are in [`src/device/features.c`](src/device/features.c).
+
+## Build and use
+
+The C host CLI sources are in [`src/host/`](src/host/). `p80h features` prints
+the full inventory; `p80h rom-info` queries the MediaTek boot path. The tablet
+agent runs temporarily from RAM. Build and test remotely in Codespaces or
+GitHub Actions; see [development](docs/development.md) and the [roadmap](docs/plan.md).
 
 ```console
 cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
@@ -20,6 +33,6 @@ cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
 ./build package
 ```
 
-Authored source is C and stays within 100 lines per file. Original vector artwork
-is kept in `artwork/`. Raw dumps, credentials, calibration and device-specific
-data stay in ignored `local/`; they never enter public artifacts.
+Authored code is C, with at most 100 lines per file. Raw dumps, credentials,
+calibration and device-specific data stay in ignored `local/`; they are never
+included in public artifacts.

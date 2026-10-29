@@ -20,5 +20,5 @@
 Do not alter boot or storage partitions until a complete private backup, verified
 independent restore path, RAM-only candidate, explicit falsifier and rollback are
 ready. The tested watchdog return used the installed boot chain and is not
-independent recovery. See C module comments for protocol, ROM, driver and loader
-contracts; current evidence is in [status](status.md).
+independent recovery. See `src/device/features.c` for current board evidence and
+acceptance gates, and C module comments for protocol, ROM and loader contracts.

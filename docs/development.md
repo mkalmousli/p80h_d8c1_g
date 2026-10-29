@@ -10,7 +10,7 @@ cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
 ./build test
 ```
 
-Targets are `tools`, `test`, `device`, `package`, `release` and `kernel-audit`.
+Targets are `host`, `test`, `device`, `package`, `release` and `kernel-audit`.
 Actions runs the same source checks on pushes. Separate Codespaces may build in
 parallel; tablet operations stay serialized.
 
