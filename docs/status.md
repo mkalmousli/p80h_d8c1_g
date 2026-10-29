@@ -80,3 +80,10 @@ The sequential client with explicit resume passed remote C checks. A fresh 4 MiB
 boot0 read matched the earlier backup exactly in about four seconds. The 7.75 GiB
 private user-area image resumed from its retained partial file; transfer remains
 in progress and the mounted filesystem prevents a coherent snapshot claim.
+
+## 2026-10-29T20:13:00Z / 009 / runtime SoC compatible inventory
+
+The installed device tree declares `teclast,p80h` / `mediatek,mt8163` and 39
+SoC child compatibles. The inventory is recorded without raw DTB or unique
+properties. Exact MT8163 driver/binding matches were absent in the pinned 7.3
+audit; shared-family strings remain candidates, not accepted support.

@@ -36,3 +36,11 @@ the existing daemon returned. No partition writes or stock restore were involved
 The factory ROM is fabricated inside the processor. Our stock-free target covers
 all writable stages and required loadable firmware; replacing that physical ROM
 would require different silicon. No private donor file may be an installer input.
+
+## 2026-10-29T20:13Z / Runtime SoC compatible inventory
+
+The C link read the root model/compatible and 39 SoC child compatible properties.
+The sanitized inventory is in [experiment 004](../experiments/004-live-tree.md).
+The Linux 7.3 scan has no exact MT8163 binding/driver matches in the audited
+paths. Shared-family drivers are candidates only; every bus, clock, reset and
+power-domain contract still needs verification.
