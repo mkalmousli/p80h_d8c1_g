@@ -24,8 +24,7 @@ evidence and acceptance gates are in [`src/device/features.c`](src/device/featur
 
 The C host CLI sources are in [`src/host/`](src/host/). `p80h features` prints
 the full inventory; `p80h rom-info` queries the MediaTek boot path. The tablet
-agent runs temporarily from RAM. Build and test remotely in Codespaces or
-GitHub Actions; see [development](docs/development.md) and the [roadmap](docs/plan.md).
+agent runs temporarily from RAM. See the [roadmap](docs/plan.md).
 
 ```console
 cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build

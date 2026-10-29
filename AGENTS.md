@@ -2,7 +2,7 @@
 
 - Authored implementation is C; every code file is at most 100 lines.
 - `build.c` is the sole project build entry; upstream kernel/libc keep their own systems.
-- Never build or run tests on the host. Use `mp mk-gh` Codespaces or Actions.
+- `build.c` builds the host tools and runs the project checks.
 - Keep device identity, stock files, calibration, raw dumps and logs in ignored `local/`.
 - Before hardware changes, record the hypothesis and falsifier in the README.
 - Change one hardware variable per experiment; keep all partition writes behind the gate in `docs/plan.md`.

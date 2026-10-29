@@ -1,6 +1,7 @@
 /local/
 /out/
 /build
+/AGENTS.local.md
 *.o
 *.core
 .DS_Store
