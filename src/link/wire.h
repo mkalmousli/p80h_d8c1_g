@@ -3,6 +3,8 @@
 #define P80H_WIRE_H
 #include <stddef.h>
 #include <stdint.h>
+/* P80H/1.0: 24-byte BE header = magic, version, op, flags, status, ID, length, CRC32. */
+/* IDs increase per session; HELLO precedes six typed operations; CRC detects corruption only. */
 #define WIRE_HEADER 24
 #define WIRE_LIMIT (1024U * 1024U)
 #define WIRE_CHUNK (64U * 1024U)

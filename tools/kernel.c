@@ -1,47 +1,32 @@
 /* SPDX-License-Identifier: MIT */
 #include "run.h"
-#include "web.h"
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 
-static char tag[64], commit[64], archive[256], sha256[128];
+#define KERNEL_TAG "v7.3"
+#define KERNEL_COMMIT "c03c1a14507dfaf8b856c2608f9ac216021fc222"
+#define KERNEL_ARCHIVE "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.3.tar.xz"
+#define KERNEL_SHA256 "87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953"
 
-/* Lock both upstream revision and release archive bytes; never use a moving ref. */
-static int pin(char **v, size_t n, void *context)
-{
-    (void)n; (void)context;
-    struct { const char *key; char *dest; size_t size; } keys[] = {
-        {"tag", tag, sizeof(tag)}, {"commit", commit, sizeof(commit)},
-        {"archive", archive, sizeof(archive)}, {"sha256", sha256, sizeof(sha256)}};
-    for (size_t i = 0; i < sizeof(keys) / sizeof(keys[0]); i++) {
-        if (strcmp(v[0], keys[i].key)) continue;
-        if (*keys[i].dest || strlen(v[1]) >= keys[i].size) return 1;
-        strcpy(keys[i].dest, v[1]); return 0;
-    }
-    return 1;
-}
-
+/* Generic ARM64 tinyconfig audit only; this is not P80h boot support. */
 int main(void)
 {
-    if (table_read("data/kernel.tsv", 2, pin, NULL) || strcmp(tag, "v7.3") ||
-        strlen(commit) != 40 || strspn(commit, "0123456789abcdef") != 40 ||
-        strlen(sha256) != 64 || strspn(sha256, "0123456789abcdef") != 64 ||
-        strcmp(archive, "https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-7.3.tar.xz")) return 1;
     if (mkdir("local", 0700) && errno != EEXIST) return 1;
     struct stat st;
     if (stat("local/linux-7.3.tar.xz", &st) && RUN("curl", "--fail", "--location",
-        "--connect-timeout", "15", "--max-time", "180", "--output", "local/linux-7.3.tar.xz", archive)) return 1;
+        "--connect-timeout", "15", "--max-time", "180", "--output", "local/linux-7.3.tar.xz", KERNEL_ARCHIVE)) return 1;
     if (RUN_TO("out/kernel-archive.sha256", "sha256sum", "local/linux-7.3.tar.xz")) return 1;
     FILE *f = fopen("out/kernel-archive.sha256", "r");
     char actual[128] = {0};
     if (!f) return 1;
     int ok = fgets(actual, sizeof(actual), f) != NULL;
     fclose(f);
-    if (!ok || strncmp(actual, sha256, 64) || actual[64] != ' ') return 1;
+    if (!ok || strncmp(actual, KERNEL_SHA256, 64) || actual[64] != ' ') return 1;
     if (mkdir("local/linux-release", 0755) && errno != EEXIST) return 1;
     if (RUN("tar", "--extract", "--xz", "--no-same-owner", "--file", "local/linux-7.3.tar.xz",
         "--directory", "local/linux-release", "--strip-components=1")) return 1;
-    puts("Pinned upstream archive verified. Audit only: not a tablet image.");
+    printf("Pinned %s (%s) archive verified; generic audit only.\n", KERNEL_TAG, KERNEL_COMMIT);
     if (RUN("make", "-C", "local/linux-release", "O=../../out/linux", "ARCH=arm64",
             "CROSS_COMPILE=aarch64-linux-gnu-", "tinyconfig")) return 1;
     if (RUN("make", "-C", "local/linux-release", "O=../../out/linux", "ARCH=arm64",

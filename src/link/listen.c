@@ -12,7 +12,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-/* Bind only the established USB gadget address; never expose root to Wi-Fi. */
+/* Bind only 172.16.42.1:4445 on USB; this root agent is temporary and not auto-started. */
 int main(void)
 {
     int listener = socket(AF_INET, SOCK_STREAM, 0), reuse = 1;

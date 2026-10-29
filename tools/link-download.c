@@ -8,6 +8,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+/* One 64 KiB GET at a time is reliable on this USB stack; every response is ID/CRC checked. */
+/* Explicit resume appends to an existing regular file; ordinary get never overwrites. */
 static int download(struct link_session *s, const char *remote, const char *local, int resume)
 {
     size_t length = strlen(remote);

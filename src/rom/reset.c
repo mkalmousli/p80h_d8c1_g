@@ -24,7 +24,8 @@ static int begin(struct rom_transport *t, unsigned char command, uint32_t addres
     return echo(t, data, 4) || t->transfer(t->context, 0, status, 2) || status[0] || status[1];
 }
 
-/* Restricted reset only: never accept arbitrary memory addresses from the CLI. */
+/* Only MT8163 WDT MODE 0x10007000 and SWRST 0x10007014; reject protected flags. */
+/* Mask ROM is immutable silicon. This volatile reset is not an install or recovery proof. */
 int rom_wdt_reset(struct rom_transport *t, const struct rom_information *info)
 {
     if (info->chip != 0x8163 || (info->config & 0x60)) return 1;

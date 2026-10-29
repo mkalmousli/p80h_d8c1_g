@@ -1,5 +1,0 @@
-# key|value
-name|p80h
-summary|An open boot platform for the Teclast P80h. Native Alpine, auditable sources, measured hardware support.
-base|/p80h_d8c1_g/
-repo|https://github.com/mkalmousli/p80h_d8c1_g

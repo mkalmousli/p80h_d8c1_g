@@ -27,17 +27,8 @@ static int check(const char *path)
         return failed;
     }
     const char *extension = strrchr(path, '.');
-    /* Reviewed evidence images are the sole binary exception; never scan dumps. */
-    if (!strncmp(path, "./site/assets/captures/", 23) && extension && !strcmp(extension, ".png")) {
-        unsigned char signature[8];
-        FILE *image = fopen(path, "rb");
-        if (!image) return 1;
-        int bad = st.st_size > 1024 * 1024 || fread(signature, 1, 8, image) != 8 ||
-            memcmp(signature, "\211PNG\r\n\032\n", 8);
-        fclose(image); return bad;
-    }
     const char *allowed[] = {".c", ".h", ".md", ".json", ".yml", ".yaml",
-        ".css", ".html", ".svg", ".tsv", ".gitignore", ".nojekyll", NULL};
+        ".svg", ".gitignore", NULL};
     const char *name = strrchr(path, '/');
     name = name ? name + 1 : path;
     int ok = !strcmp(name, "LICENSE") || !strcmp(name, "NOTICE");

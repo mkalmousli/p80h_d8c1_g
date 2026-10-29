@@ -6,6 +6,7 @@
 struct rom_endpoint { unsigned interface, input, output; };
 struct rom_transport { void *context; int (*transfer)(void *, int writing, unsigned char *, size_t); };
 struct rom_information { uint16_t chip, hardware, subcode, software; uint32_t config; };
+/* Probe reads only MTK handshake/chip/security facts; it never reads serial identities. */
 int rom_descriptors(const unsigned char *, size_t, struct rom_endpoint *);
 int rom_probe(struct rom_transport *, struct rom_information *);
 int rom_wdt_reset(struct rom_transport *, const struct rom_information *);

@@ -32,13 +32,8 @@ static int build_tools(void)
     return BUILD("out/p80h", "tools/entry.c", "tools/host.c", "tools/image.c",
         "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c",
         "tools/gpt.c", "tools/gpt-cli.c", "tools/rom-find.c", "tools/rom-usb.c", "tools/rom-info.c",
-        ROM_SOURCES, CLIENT_SOURCES, WIRE_SOURCES) ||
+        ROM_SOURCES, CLIENT_SOURCES, WIRE_SOURCES, "src/device/features.c") ||
         BUILD("out/policy", "tools/policy.c") ||
-        BUILD("out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
-            "tools/html.c", "tools/inline.c", "tools/markdown.c", "tools/library.c",
-            "tools/feature.c", "tools/template.c", "tools/maps.c", "tools/graph-data.c",
-            "tools/graph-svg.c", "tools/feature-graph.c", "tools/feature-map.c", "tools/gallery.c", "tools/summary.c",
-            "tools/journal.c") ||
         BUILD("out/package", "tools/package.c");
 }
 
@@ -49,8 +44,6 @@ static int build_tests(void)
         BUILD("out/gpt-test", "tests/gpt.c", "tools/gpt.c") || RUN("out/gpt-test") ||
         BUILD("out/transport-test", "tests/transport.c", "tools/net.c", "tools/command.c", "tools/get.c") || RUN("out/transport-test") ||
         BUILD("out/upload-test-bin", "tests/upload.c", "tools/net.c", "tools/put.c") || RUN("out/upload-test-bin") ||
-        BUILD("out/web-test", "tests/web.c", "tools/table.c", "tools/html.c",
-            "tools/inline.c", "tools/markdown.c", "tools/graph-data.c") || RUN("out/web-test") ||
         BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test") ||
         BUILD("out/link-transfer-test", "tests/link-transfer.c", "tools/link-session.c", "tools/net.c",
             "tools/link-download.c", "tools/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test") ||

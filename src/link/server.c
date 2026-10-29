@@ -2,7 +2,8 @@
 #include "server.h"
 #include <stdlib.h>
 
-/* HELLO is mandatory; the cap permits full-device chunked reads. */
+/* HELLO is mandatory; IDs increase and a session allows 262144 requests for full-device reads. */
+/* EXEC and GET are privileged, so listen.c binds only isolated USB; PUT stages /tmp files only. */
 void serve_connection(int fd)
 {
     int negotiated = 0;

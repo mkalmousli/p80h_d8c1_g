@@ -12,14 +12,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Bootstrap C build entry point
         run: cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
-      - name: Verify and package host tools
+      - name: Build and package host tools
         run: ./build package
       - uses: actions/upload-artifact@v4
         with:
-          name: host-tools-${{ github.sha }}
+          name: p80h-tools-${{ github.sha }}
           path: out/release/
           if-no-files-found: error
-      - uses: actions/upload-artifact@v4
-        with:
-          name: progress-${{ github.sha }}
-          path: out/progress.md

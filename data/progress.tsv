@@ -1,7 +1,0 @@
-# kind|id|title|state|detail
-M|01|Remote foundation|verified|Strict C builds and integration tests pass in Actions and both Codespaces.
-M|02|Device access and recovery|implemented|C transport verified; critical boot backups match readback; independent recovery pending.
-M|03|Open hardware initialization|planned|DRAM, security state and writable boot stages need specifications.
-M|04|Native boot manager|implemented|Portable menu policy exists; board loader and rendering not implemented.
-M|05|Mainline hardware support|planned|Historical support must be reverified with pinned upstream sources.
-M|06|Alpine by default|planned|Native boot, reliable storage and independent recovery are release gates.

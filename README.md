@@ -1,42 +1,25 @@
 # P80h
 
-An open boot platform for the Teclast P80h (MT8163).
-Native Alpine. Small C tools. Original artwork. Measured hardware support.
+Open boot-platform research for the Teclast P80h (MT8163). The goal is direct
+Alpine boot from a native C boot manager. There is no replacement firmware yet.
 
-[Device & progress](https://mkalmousli.github.io/p80h_d8c1_g/) ·
-[Roadmap](docs/plan.md) · [Specification](docs/specification.md) ·
-[Architecture](docs/architecture.md) · [Recovery](docs/recovery.md) ·
-[Remote development](docs/development.md) · [Bring-up log](docs/status.md)
+The host tool is C: `p80h features` lists the current driver evidence and next
+acceptance gates; `p80h rom-info` queries the MediaTek boot path; `p80h` uses the
+versioned P80H/1 USB link. The device agent is temporary in RAM.
 
-**Early research. No flashable replacement firmware is available yet.**
-The permanent silicon Boot ROM cannot be replaced. Writable stages and drivers
-are research targets, not promises of existing support.
+The processor's mask ROM is fixed silicon code. The project can replace writable
+stages after it, but cannot rewrite the physical ROM. No boot partition has been
+changed by this project. See the [roadmap](docs/plan.md), [current status](docs/status.md)
+and [remote build instructions](docs/development.md).
 
-## Build remotely
-
-In Codespaces or Actions only:
+Build only in Codespaces or GitHub Actions:
 
 ```console
 cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
 ./build test
-./build site
 ./build package
 ```
 
-`build.c` is the entry point. There are no project Makefiles, shell scripts,
-Python tools, or JavaScript dependencies. Upstream Linux retains its build tools.
-All authored files are limited to 100 lines. Private data belongs in `local/`.
-
-## Layout
-
-| Directory | Purpose |
-|---|---|
-| `tools/` | C build, policy, site and host utilities |
-| `src/boot/` | Portable boot-menu policy, independent of hardware |
-| `tests/` | Host verification of parsers and boot policy |
-| `data/` | Shared milestone and hardware records |
-| `site/` | Static page templates, CSS and original SVG artwork |
-| `docs/` | Contracts, experiments, recovery and provenance |
-
-Existing vendor code and firmware are not imported. Dependencies and exceptions
-are documented in [provenance](docs/provenance.md).
+Authored source is C and stays within 100 lines per file. Original vector artwork
+is kept in `artwork/`. Raw dumps, credentials, calibration and device-specific
+data stay in ignored `local/`; they never enter public artifacts.
