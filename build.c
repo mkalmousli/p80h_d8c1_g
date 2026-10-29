@@ -51,6 +51,8 @@ int main(int argc, char **argv)
     if (!strcmp(target, "tools")) return 0;
     if (compile("out/test", "tests/main.c", "src/boot/menu.c", "tools/image.c") ||
         RUN("out/test")) return 1;
+    if (compile("out/native-test", "tests/native.c", "src/boot/native-image.c", "src/boot/native-layout.c") ||
+        RUN("out/native-test")) return 1;
     if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
         "-o", "out/transport-test", "tests/transport.c", "tools/net.c",
         "tools/command.c", "tools/get.c") || RUN("out/transport-test")) return 1;
