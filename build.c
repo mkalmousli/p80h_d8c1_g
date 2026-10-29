@@ -17,7 +17,8 @@ static int tools(void)
 {
     return RUN("cc", "-std=c11", "-O2", "-g", "-Wall", "-Wextra", "-Werror",
         "-pedantic", "-I.", "-o", "out/p80h", "tools/host.c", "tools/image.c",
-        "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c") ||
+        "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c",
+        "tools/gpt.c", "tools/gpt-cli.c") ||
         compile("out/policy", "tools/policy.c", NULL, NULL) ||
         RUN("cc", "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
             "-o", "out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
@@ -53,6 +54,7 @@ int main(int argc, char **argv)
         RUN("out/test")) return 1;
     if (compile("out/native-test", "tests/native.c", "src/boot/native-image.c", "src/boot/native-layout.c") ||
         RUN("out/native-test")) return 1;
+    if (compile("out/gpt-test", "tests/gpt.c", "tools/gpt.c", NULL) || RUN("out/gpt-test")) return 1;
     if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
         "-o", "out/transport-test", "tests/transport.c", "tools/net.c",
         "tools/command.c", "tools/get.c") || RUN("out/transport-test")) return 1;

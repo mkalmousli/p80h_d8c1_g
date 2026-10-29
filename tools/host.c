@@ -2,6 +2,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "image.h"
 #include "net.h"
+#include "gpt.h"
 #include <inttypes.h>
 #include <errno.h>
 #include <stdio.h>
@@ -56,7 +57,8 @@ int main(int argc, char **argv)
     if (argc == 6 && !strcmp(argv[1], "get")) return range(argv[2], argv[3], argv[4], argv[5]);
     if (argc == 4 && !strcmp(argv[1], "put")) return daemon_put(argv[2], argv[3]);
     if (argc == 3 && !strcmp(argv[1], "inspect")) return inspect(argv[2]);
-    puts("p80h: usb | inspect IMAGE | ping | status | sh 'COMMAND'\n"
+    if (argc == 3 && !strcmp(argv[1], "gpt")) return gpt_inspect(argv[2]);
+    puts("p80h: usb | inspect IMAGE | gpt SNAPSHOT | ping | status | sh 'COMMAND'\n"
          "      get REMOTE LOCAL [OFFSET LENGTH] | put LOCAL /tmp/p80h-NAME");
     return argc == 1 ? 0 : 2;
 }
