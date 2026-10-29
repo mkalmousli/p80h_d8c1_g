@@ -61,8 +61,9 @@ void page_head(FILE *f, const char *title)
 
 void page_foot(FILE *f)
 {
-    fputs("</main><footer class=wrap><span>Generated from versioned repository data.</span>"
-          "<a href=files/NOTICE.html>Sources & licenses</a></footer></body></html>\n", f);
+    fputs("</main><footer class=wrap><span>Generated from repository data · ", f);
+    html(f, project.revision);
+    fputs("</span><a href=files/NOTICE.html>Sources & licenses</a></footer></body></html>\n", f);
 }
 
 /* Only caller-validated relative paths reach this helper. No shell commands. */

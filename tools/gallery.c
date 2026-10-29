@@ -10,7 +10,7 @@ static int capture(char **v, size_t n, void *context)
     if (strncmp(v[2], "assets/captures/", 16) || strstr(v[2], "..") ||
         strspn(v[2], "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_/." ) != strlen(v[2])) return 1;
     fputs("<figure class=capture><a href=\"", out); html(out, v[2]);
-    fputs("\"><img loading=lazy width=800 height=1280 src=\"", out); html(out, v[2]);
+    fputs("\"><img width=800 height=1280 src=\"", out); html(out, v[2]);
     fputs("\" alt=\"", out); html(out, v[1]); fputs("\"></a><figcaption><strong>", out);
     html(out, v[1]); fputs("</strong><br>Run ", out); html(out, v[0]);
     fputs(" · ", out); html(out, v[4]); fputs(" · source ", out); html(out, v[3]);

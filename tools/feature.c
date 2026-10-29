@@ -59,3 +59,15 @@ int feature_pages(FILE *summary)
     if (summary) fputs("<p><a class=button href=hardware.html>Browse every feature & driver →</a></p>", summary);
     return failed;
 }
+
+/* The downloadable Markdown summary shares the complete hardware inventory. */
+static int markdown_row(char **v, size_t n, void *out)
+{
+    (void)n;
+    return fprintf(out, "| %s | %s | %s |\n", v[1], v[2], v[5]) < 0;
+}
+
+int feature_markdown(FILE *out)
+{
+    return table_read("data/features.tsv", 8, markdown_row, out);
+}

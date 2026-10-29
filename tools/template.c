@@ -7,13 +7,12 @@
 static int token(FILE *out, const char *key)
 {
     if (!strcmp(key, "milestones")) return records(out, 0, 'M');
-    if (!strcmp(key, "hardware")) return records(out, 0, 'H');
     if (!strcmp(key, "captures")) return gallery_entries(out);
     if (!strcmp(key, "counts")) return summary_entries(out);
     if (!strcmp(key, "device")) return device_entries(out);
     const struct { const char *key, *value; } values[] = {
         {"name", project.name}, {"summary", project.summary},
-        {"base", project.base}, {"repo", project.repo}};
+        {"base", project.base}, {"repo", project.repo}, {"revision", project.revision}};
     for (size_t i = 0; i < sizeof(values) / sizeof(values[0]); i++) {
         if (strcmp(key, values[i].key)) continue;
         html(out, values[i].value); return ferror(out);

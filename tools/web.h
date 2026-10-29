@@ -3,7 +3,7 @@
 #define P80H_WEB_H
 #include <stdio.h>
 #include <stddef.h>
-struct project { char name[128], summary[512], base[128], repo[256]; };
+struct project { char name[128], summary[512], base[128], repo[256], revision[128]; };
 extern struct project project;
 /* Shared output primitives always escape text; source HTML is never trusted. */
 void html(FILE *, const char *);
@@ -24,4 +24,5 @@ int gallery_entries(FILE *);
 int gallery_generate(void);
 int summary_entries(FILE *);
 int device_entries(FILE *);
+int feature_markdown(FILE *);
 #endif
