@@ -18,7 +18,11 @@ static int tools(void)
         "-pedantic", "-I.", "-o", "out/p80h", "tools/host.c", "tools/image.c",
         "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c") ||
         compile("out/policy", "tools/policy.c", NULL, NULL) ||
-        compile("out/sitegen", "tools/site.c", "tools/records.c", NULL) ||
+        RUN("cc", "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
+            "-o", "out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
+            "tools/html.c", "tools/inline.c", "tools/markdown.c", "tools/library.c",
+            "tools/feature.c", "tools/template.c", "tools/maps.c", "tools/graph-data.c",
+            "tools/graph-svg.c", "tools/feature-graph.c") ||
         compile("out/package", "tools/package.c", NULL, NULL);
 }
 
@@ -47,6 +51,9 @@ int main(int argc, char **argv)
         "-o", "out/transport-test", "tests/transport.c", "tools/net.c",
         "tools/command.c", "tools/get.c") || RUN("out/transport-test")) return 1;
     if (RUN("out/sitegen")) return 1;
+    if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
+        "-o", "out/web-test", "tests/web.c", "tools/table.c", "tools/html.c",
+        "tools/inline.c", "tools/markdown.c", "tools/graph-data.c") || RUN("out/web-test")) return 1;
     if (!strcmp(target, "package")) return RUN("out/package");
     return 0;
 }

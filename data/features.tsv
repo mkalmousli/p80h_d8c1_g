@@ -1,0 +1,31 @@
+# id|feature|state|component|driver observed|evidence|next acceptance gate|dependency
+cpu|CPU and SMP|observed|MT8163 / Cortex-A53|ARM64 core|Live uname reports aarch64; model reports MT8163.|Verify all cores, topology and stress stability.|power
+dram|Memory and DRAM initialization|planned|Board DRAM configuration|Stock early initialization currently retained|Current Linux runs; free DRAM initialization is not implemented.|Identify geometry and validate an independent FOSS initialization path.|rom
+clocks|Clocks and pin control|observed|MT8163 clock trees|clk-mt8163-topckgen / mediatek-mt8163-pinctrl|Drivers bound in installed kernel during run 002.|Audit register contracts and port to pinned upstream.|power
+emmc|Internal eMMC storage|observed|eMMC user and boot regions|mtk-msdc|Live enumeration: user area 15140864 sectors; boot regions 8192 sectors each.|Private backups, GPT validation and sustained integrity tests.|clocks
+sd|microSD slot|observed|Second MSDC controller|mtk-msdc|Second controller is bound; no card functionality test recorded.|Insert card, verify read/write and hotplug behavior.|clocks
+usb-device|USB device and host transport|verified|MT8163 MUSB|musb-mtk / phy-mt8163-usb|C ping, status, shell exit status and file download verified on USB link.|Sustained transfers and disconnect recovery.|clocks
+usb-host|USB OTG host|observed|USB role connector|usb-conn-gpio / musb-hdrc|Role connector is bound; historical keyboard support is not reverified.|Keyboard, mouse, storage and return-to-device tests.|power
+display|Display pipeline and panel|observed|800 by 1280 display|mediatek-drm / mtk-dsi / mediatek-mipi-tx|Live framebuffer geometry and real screenshot captured.|Verify panel modes, stability and native boot framebuffer.|clocks
+backlight|Panel backlight|observed|PWM backlight|pwm-backlight|Driver bound in installed kernel.|Brightness range, power sequencing and resume.|display
+touch|Touchscreen|observed|Silead controller at I2C0 address 0x40|silead_ts|I2C driver bound; free firmware provenance not established.|FOSS firmware path, multitouch accuracy and orientation.|clocks
+keys|Physical buttons|observed|MediaTek keypad and PMIC keys|mt6779-keypad / mtk-pmic-keys|Both input drivers are bound.|Verify every key, wake behavior and menu navigation.|power
+power|PMIC and regulators|observed|MT6323 class PMIC|mt6397 / mt6323-regulator / mt6323-pwrc|PMIC and regulator drivers bound.|Audit rails, transitions and safe cold boot sequencing.|rom
+charger|Charging and battery telemetry|observed|FAN5405 family / battery gauge|bq2415x-charger / mt6323-battery|Charging at about 3.53 V; capacity reports 0 percent and is not validated.|Measure against hardware; validate limits and charge termination.|power
+cpufreq|CPU frequency scaling|planned|MT8163 performance states|No verified driver path|Historical installation runs without verified frequency scaling.|Establish safe voltage/frequency operating points.|power
+thermal|Thermal monitoring|observed|MT8163 thermal controller|mtk-thermal|Driver bound; measurements not independently validated.|Validate readings and thermal throttling.|power
+wifi|Wi-Fi|blocked|Integrated CONSYS radio|mt-wifi / mt8163consys|Drivers bound; existing stack has vendor-derived dependencies.|Implement auditable driver and free loadable firmware without stock files.|power
+bluetooth|Bluetooth|blocked|CONSYS over BTIF|mtk_btif|BTIF driver bound; full free stack not established.|Free firmware path, pairing and sustained traffic.|wifi
+fm|FM radio capability|planned|CONSYS feature under investigation|No new-project driver|Historical software mentions FM; physical capability not reverified.|Confirm hardware presence before implementing support.|wifi
+gpu|GPU acceleration|blocked|Sapphire Lite reported historically|No verified open driver|Historical survey is a research lead, not current driver support.|Establish specifications and an auditable acceleration driver.|dram
+video|Video acceleration|planned|MT8163 codec blocks|No verified driver path|No decode or encode acceptance evidence.|Identify blocks and test free userspace integration.|dram
+audio|Speakers and headphone audio|observed|MT8163 AFE and MT6323 codec|mt8163-afe / mt6323-codec / simple-amplifier|Drivers bound; audible output not verified.|Playback, capture, routing and suspend tests.|power
+camera|Front and rear cameras|planned|Sensors not independently identified|No verified open path|Historical board data references cameras.|Identify sensors, control buses, clocks and capture path.|clocks
+accelerometer|Motion sensor|observed|I2C2 address 0x26|da280|Live driver bound; historical survey names MIR3DA.|Confirm device identity, orientation and calibration.|clocks
+rtc|Real-time clock|observed|PMIC RTC|mt6397-rtc|Driver bound in installed kernel.|Time retention, alarms and wake tests.|power
+watchdog|Watchdog and reboot modes|observed|MT8163 watchdog / PMIC reboot mode|mtk-wdt / p80h-reboot-mode|Drivers bound; historical fallback not assumed for new firmware.|Independent reset and recovery tests under controlled conditions.|power
+suspend|Suspend and wake|planned|Platform power management|No verified complete path|No new-project acceptance evidence.|Repeated suspend/resume with USB, panel and storage recovery.|power
+rom|Boot ROM entry and free first stage|planned|Immutable silicon ROM / writable payload|No new first-stage implementation|Physical mask ROM cannot be reflashed; no stock files may be required by installer.|Implement FOSS transport and first-stage payload; document immutable boundary.|none
+secure|Secure monitor and early firmware|planned|ARM exception levels / writable firmware|No new replacement|Current boot stages retained for recovery.|Audit entry state and implement required free monitor interfaces.|dram
+boot-manager|Native boot manager|implemented|Portable C menu policy|src/boot/menu.c|Timeout, selection, disabled entries and wrap behavior pass host tests.|Board renderer, storage, configuration and direct kernel handoff.|secure
+alpine|Plain Alpine default boot|planned|Alpine Linux|No new native installation|Current installation preserved; default native boot is a milestone.|Native boot with reliable storage and independent recovery.|boot-manager

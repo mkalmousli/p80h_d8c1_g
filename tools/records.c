@@ -30,8 +30,8 @@ int records(FILE *out, int markdown, char kind)
             fprintf(out, "| %s | %s | %s |\n", fields[2], fields[3], fields[4]);
         else if (kind == 'M')
             fprintf(out, "<li><span class=number>%s</span><div><h3>%s</h3>"
-                "<p>%s</p></div><span class=state>%s</span></li>\n",
-                fields[1], fields[2], fields[4], fields[3]);
+                "<p>%s</p></div><span class=state data-state=%s>%s</span></li>\n",
+                fields[1], fields[2], fields[4], fields[3], fields[3]);
         else
             fprintf(out, "<tr><th scope=row>%s</th><td>%s</td><td>%s</td></tr>\n",
                 fields[2], fields[3], fields[4]);

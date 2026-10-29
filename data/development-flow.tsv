@@ -1,0 +1,10 @@
+# id|label|state|parent IDs
+repo|Versioned source and data|verified|none
+platform|Codespace: platform|verified|repo
+validation|Codespace: validation|verified|repo
+artifact|Checksummed artifacts|verified|platform,validation
+host|Host: transfer and USB|verified|artifact
+device|Tablet: one experiment|observed|host
+evidence|Sanitized evidence|implemented|device
+docs|Docs and feature records|implemented|evidence
+site|Generated Pages site|verified|docs
