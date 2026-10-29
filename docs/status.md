@@ -83,13 +83,6 @@ boot0 read matched the earlier backup exactly in about four seconds. The 7.75 Gi
 private user-area image resumed from its retained partial file; transfer remains
 in progress and the mounted filesystem prevents a coherent snapshot claim.
 
-## 2026-10-29T20:13:00Z / 009 / runtime SoC compatible inventory
-
-The installed device tree declares `teclast,p80h` / `mediatek,mt8163` and 39
-SoC child compatibles. The inventory is recorded without raw DTB or unique
-properties. Exact MT8163 driver/binding matches were absent in the pinned 7.3
-audit; shared-family strings remain candidates, not accepted support.
-
 ## 2026-10-29T20:27:09Z / 010 / temporary agent cleanup
 
 Hypothesis: deleting the uploaded `/tmp` copy after launching the agent from
@@ -97,3 +90,10 @@ Hypothesis: deleting the uploaded `/tmp` copy after launching the agent from
 service ping fails or the file remains. Change: remove only that named temp copy;
 no boot or partition target is involved.
 Result: staging removed; P80H ping and the `/run` executable check both pass.
+
+## 2026-10-29T20:28:00Z / 011 / stale test-file cleanup
+
+Hypothesis: removing only inactive `/tmp/p80h-link-v1`, its log/PID, and the
+binary fixture leaves the legacy daemon, RAM agent and artwork unchanged.
+Falsifier: PID 4009 is active, a service ping fails, or a named file remains.
+Change: unlink those four test artifacts; preserve wallpaper and splash files.
