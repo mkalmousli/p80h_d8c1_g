@@ -1,0 +1,6 @@
+/local/
+/out/
+/build
+*.o
+*.core
+.DS_Store

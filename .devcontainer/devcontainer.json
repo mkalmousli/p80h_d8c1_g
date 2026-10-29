@@ -1,0 +1,9 @@
+{
+  "name": "P80h remote lab",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "hostRequirements": { "cpus": 4, "memory": "8gb", "storage": "32gb" },
+  "remoteEnv": { "P80H_REMOTE_LAB": "1" },
+  "customizations": {
+    "vscode": { "settings": { "files.insertFinalNewline": true } }
+  }
+}
