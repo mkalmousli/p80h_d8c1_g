@@ -49,6 +49,8 @@ static int build_tests(void)
         BUILD("out/upload-test-bin", "tests/upload.c", "tools/net.c", "tools/put.c") || RUN("out/upload-test-bin") ||
         BUILD("out/web-test", "tests/web.c", "tools/table.c", "tools/html.c",
             "tools/inline.c", "tools/markdown.c", "tools/graph-data.c") || RUN("out/web-test") ||
-        BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test");
+        BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test") ||
+        BUILD("out/link-transfer-test", "tests/link-transfer.c", "tools/link-session.c", "tools/net.c",
+            "tools/link-download.c", "tools/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test");
 }
 #endif

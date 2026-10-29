@@ -23,3 +23,17 @@ Fresh backups and independent recovery are required before boot-stage changes.
 
 Date / run / hypothesis / falsifier / one change / source commit / artifact SHA256 /
 device observation / result / rollback. Sanitized results only; raw logs stay local.
+
+## 2026-10-29T19:08:38Z / 004 / binary link migration
+
+Hypothesis: a fresh static ARM64 server can speak P80H/1 over USB alongside the
+existing daemon, with no startup or boot partition changes.
+
+Falsifier: negotiation/status fail, shell exit codes differ, binary downloads or
+multi-chunk upload hashes differ, or the existing connection becomes unavailable.
+
+Change: stage the cross-built server under /tmp and run it on 172.16.42.1:4445.
+Rollback: stop that recorded process; the original daemon on port 4444 remains.
+
+Preflight: both Codespaces pass strict builds and P80H/1 host integration tests.
+Result: pending live USB acceptance; do not remove the original daemon yet.
