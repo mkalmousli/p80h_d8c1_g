@@ -60,6 +60,8 @@ Change: raise the per-session request cap from 65536 to 262144, enough for
 The live filesystem may change during a raw block read, so this is not a
 coherent filesystem snapshot or restore proof. Raw data stays local; it is not
 sent to Codespaces for hashing or analysis.
+The partial transfer's first 34 sectors pass the C GPT CRC/bounds parser and
+match the previously verified private primary GPT; the remaining image is pending.
 
 ## 2026-10-29T20:05:00Z / 008 / windowed binary reads
 
