@@ -39,7 +39,11 @@ static int page(const char *path)
     if (!text) { fclose(f); return 1; }
     int failed = fread(text, 1, (size_t)size, f) != (size_t)size;
     fclose(f); text[size] = 0;
+    int in_tag = 0;
     for (char *p = text; *p; p++) {
+        if (*p == '<') in_tag = 1;
+        if (*p == '>') in_tag = 0;
+        if (!in_tag) continue;
         size_t key = !strncmp(p, "href=", 5) ? 5 : !strncmp(p, "src=", 4) ? 4 : 0;
         if (!key) continue;
         char *value = p + key, quote = *value == '"' || *value == '\'' ? *value++ : 0;
@@ -48,6 +52,7 @@ static int page(const char *path)
         char saved = *end; *end = 0;
         failed |= target(value, path); *end = saved;
         if (!saved) break;
+        if (saved == '>') in_tag = 0;
         p = end;
     }
     free(text); return failed;

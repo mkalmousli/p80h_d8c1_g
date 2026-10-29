@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     const char *actions = getenv("GITHUB_ACTIONS");
     const char *target = argc == 2 ? argv[1] : "help";
     if (!strcmp(target, "help")) {
-        puts("Remote only: ./build {test|site|package|tools}");
+        puts("Remote only: ./build {test|site|package|tools|kernel-audit}");
         return 0;
     }
     if ((!codespaces || strcmp(codespaces, "true")) &&
@@ -41,8 +41,10 @@ int main(int argc, char **argv)
         return 1;
     }
     if (strcmp(target, "test") && strcmp(target, "site") &&
-        strcmp(target, "package") && strcmp(target, "tools")) return 2;
+        strcmp(target, "package") && strcmp(target, "tools") && strcmp(target, "kernel-audit")) return 2;
     if (mkdir("out", 0755) && errno != EEXIST) return 1;
+    if (!strcmp(target, "kernel-audit"))
+        return compile("out/kernel-lab", "tools/kernel.c", "tools/table.c", NULL) || RUN("out/kernel-lab");
     if (tools() || RUN("out/policy")) return 1;
     if (!strcmp(target, "tools")) return 0;
     if (compile("out/test", "tests/main.c", "src/boot/menu.c", "tools/image.c") ||
