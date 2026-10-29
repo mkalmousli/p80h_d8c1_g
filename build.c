@@ -16,7 +16,7 @@ static int tools(void)
 {
     return RUN("cc", "-std=c11", "-O2", "-g", "-Wall", "-Wextra", "-Werror",
         "-pedantic", "-I.", "-o", "out/p80h", "tools/host.c", "tools/image.c",
-        "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c") ||
+        "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c") ||
         compile("out/policy", "tools/policy.c", NULL, NULL) ||
         compile("out/sitegen", "tools/site.c", "tools/records.c", NULL) ||
         compile("out/package", "tools/package.c", NULL, NULL);

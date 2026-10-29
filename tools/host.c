@@ -3,10 +3,26 @@
 #include "image.h"
 #include "net.h"
 #include <inttypes.h>
+#include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 int usb_list(void);
+
+static int range(const char *remote, const char *local, const char *a, const char *b)
+{
+    const char *texts[] = {a, b};
+    uint64_t values[2];
+    for (unsigned i = 0; i < 2; i++) {
+        if (!*texts[i] || strspn(texts[i], "0123456789") != strlen(texts[i])) return 2;
+        char *end;
+        errno = 0;
+        values[i] = strtoull(texts[i], &end, 10);
+        if (errno || *end) return 2;
+    }
+    return daemon_get_range(remote, local, values[0], values[1]);
+}
 
 static int inspect(const char *path)
 {
@@ -37,7 +53,10 @@ int main(int argc, char **argv)
         return n < 0 || (size_t)n >= sizeof(header) ? 2 : daemon_command(header);
     }
     if (argc == 4 && !strcmp(argv[1], "get")) return daemon_get(argv[2], argv[3]);
+    if (argc == 6 && !strcmp(argv[1], "get")) return range(argv[2], argv[3], argv[4], argv[5]);
+    if (argc == 4 && !strcmp(argv[1], "put")) return daemon_put(argv[2], argv[3]);
     if (argc == 3 && !strcmp(argv[1], "inspect")) return inspect(argv[2]);
-    puts("p80h: usb | inspect IMAGE | ping | status | sh 'COMMAND' | get REMOTE LOCAL");
+    puts("p80h: usb | inspect IMAGE | ping | status | sh 'COMMAND'\n"
+         "      get REMOTE LOCAL [OFFSET LENGTH] | put LOCAL /tmp/p80h-NAME");
     return argc == 1 ? 0 : 2;
 }

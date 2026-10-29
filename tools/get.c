@@ -3,15 +3,17 @@
 #include "net.h"
 #include <errno.h>
 #include <fcntl.h>
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-int daemon_get(const char *remote, const char *local)
+static int get(const char *remote, const char *local, uint64_t offset, uint64_t size)
 {
     char header[1024], sizebuf[32], buffer[65536];
-    int n = snprintf(header, sizeof(header), "GET %s 0", remote);
+    int n = size == UINT64_MAX ? snprintf(header, sizeof(header), "GET %s 0", remote) :
+        snprintf(header, sizeof(header), "GET %s %" PRIu64 " %" PRIu64, remote, offset, size);
     if (strpbrk(remote, " \t\r\n") || n < 0 || (size_t)n >= sizeof(header)) return 1;
     int fd = daemon_open(header), output = -1, result = 1;
     if (fd < 0) return 1;
@@ -26,6 +28,7 @@ int daemon_get(const char *remote, const char *local)
     char *end;
     unsigned long long remaining = strtoull(sizebuf, &end, 10);
     if (errno || end == sizebuf || *end || remaining > 256ULL * 1024 * 1024) goto done;
+    if (size != UINT64_MAX && remaining != size) goto done;
     output = open(local, O_WRONLY | O_CREAT | O_EXCL, 0600);
     if (output < 0) { perror(local); goto done; }
     while (remaining) {
@@ -50,4 +53,16 @@ done:
         if (result) unlink(local);
     }
     return result;
+}
+
+int daemon_get(const char *remote, const char *local)
+{
+    return get(remote, local, 0, UINT64_MAX);
+}
+
+int daemon_get_range(const char *remote, const char *local, uint64_t offset, uint64_t size)
+{
+    if (offset > INT64_MAX || size > 256ULL * 1024 * 1024 || size > INT64_MAX - offset)
+        return 1;
+    return get(remote, local, offset, size);
 }
