@@ -53,7 +53,7 @@ the precise kernel/USB failure mechanism is not yet established.
 Hypothesis: a 256 Ki-request P80H/1 session can transfer the full 7.75 GiB
 eMMC as 64 KiB reads into a private local backup with exact size and valid
 per-frame CRCs. Falsifier: source size mismatch, incomplete transfer, invalid
-frame CRC, or inability to keep the image private. No persistent device writes.
+frame CRC, or inability to keep the image private. No boot-partition writes.
 
 Change: raise the per-session request cap from 65536 to 262144, enough for
 118289 GETs plus protocol setup. Validate source/build policy remotely first.
@@ -70,7 +70,7 @@ least 2x while preserving each response ID, length, total size and CRC. A new
 explicit resume command can continue a private partial file without overwriting
 an existing destination. Falsifier: synthetic round-trip corruption, live boot
 region mismatch, throughput below 2 MiB/s, or loss of the existing service.
-Block reads are read-only; runtime service files stay in volatile storage.
+Block reads are read-only; the agent runs from `/run`; `/tmp` staging is tracked in 010.
 
 Remote C tests passed. A 4 MiB pipelined boot-region read matched the existing
 backup byte for byte. During sustained pipelined reads, transfer speed fell below
@@ -96,3 +96,4 @@ Hypothesis: deleting the uploaded `/tmp` copy after launching the agent from
 `/run` preserves P80H/1 service and leaves no staged agent in rootfs. Falsifier:
 service ping fails or the file remains. Change: remove only that named temp copy;
 no boot or partition target is involved.
+Result: staging removed; P80H ping and the `/run` executable check both pass.
