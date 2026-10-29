@@ -97,3 +97,15 @@ Official kernel.org archive hash matched its published checksum. ARM64 tinyconfi
 build passed remotely. The generic 1.9 MiB Image was not flashed. No mt8163 source
 matches were found in the scanned DTS/binding/driver directories. The new kernel
 therefore remains a toolchain baseline, not accepted P80h hardware support.
+
+## 2026-10-29T20:02:00Z / 007 / private eMMC read capacity
+
+Hypothesis: a 256 Ki-request P80H/1 session can transfer the full 7.75 GiB
+eMMC as 64 KiB reads into a private local backup, with exact size and hash
+verification. Falsifier: source size mismatch, incomplete transfer, hash
+mismatch, or inability to keep the image private. No flash or device writes.
+
+Change: raise the per-session request cap from 65536 to 262144, enough for
+118289 GETs plus protocol setup. Validate source/build policy remotely first.
+The live filesystem may change during a raw block read, so this is not a
+coherent filesystem snapshot or restore proof.

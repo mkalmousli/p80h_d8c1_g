@@ -26,7 +26,7 @@ CRC detects framing/corruption mistakes; it is not authentication or encryption.
 
 HELLO must succeed before other operations. Reply payload is capabilities:u32
 (0x3f for these six operations) and maximum payload:u32. A second HELLO is invalid.
-At most 65536 requests per session; socket inactivity timeout is 35 seconds.
+At most 262144 requests per session; socket inactivity timeout is 35 seconds.
 
 | Opcode | Name | Request | Successful response |
 |---|---|---|---|

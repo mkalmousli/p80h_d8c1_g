@@ -2,12 +2,12 @@
 #include "server.h"
 #include <stdlib.h>
 
-/* HELLO is mandatory. A connection processes at most 65536 bounded requests. */
+/* HELLO is mandatory; the cap permits full-device chunked reads. */
 void serve_connection(int fd)
 {
     int negotiated = 0;
     uint32_t previous = 0;
-    for (unsigned i = 0; i < 65536; i++) {
+    for (unsigned i = 0; i < WIRE_SESSION_REQUESTS; i++) {
         struct wire_message request, response = {0};
         if (wire_recv(fd, &request)) break;
         response.op = request.op; response.id = request.id; response.flags = WIRE_REPLY;
