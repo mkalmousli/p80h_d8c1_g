@@ -14,5 +14,14 @@ This is a compiler/source baseline, not a P80h kernel configuration or a flashab
 image. It proves no hardware support. No tablet boot experiment is authorized by
 passing this build alone; board specifications and independent recovery come first.
 
-Result: pending remote cross-build. Next: inventory upstream MT8163 support and
-document each missing controller independently of historical vendor-derived code.
+Result: GitHub clone stalled and archive fallback was rate-limited (HTTP 429).
+Switched to the official kernel.org release archive, pinned SHA256
+87363c24f10e06321eb362765521094e94471f6bff8bce2d6b3e40f39f004953.
+The downloaded hash matches the published kernel.org checksum. PGP signature
+verification is not claimed by this initial audit.
+
+ARM64 tinyconfig cross-build passed in Codespaces. Image SHA256:
+10bdcc32236f18c7370e01b1fd44cea72099e66714a695a890444de08693af59.
+The image is about 1.9 MiB and was not flashed. Build identity uses generic p80h /
+remote strings, not device identity. A source scan found no mt8163 matches in
+ARM64 DTS, devicetree bindings or drivers: board/controller work remains necessary.

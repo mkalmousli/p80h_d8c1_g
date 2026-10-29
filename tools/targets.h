@@ -16,7 +16,7 @@ static int compile_sources(const char *cc, const char *output, int standalone,
     char *args[128] = {(char *)cc, "-std=c11", "-Os", "-g", "-Wall", "-Wextra",
         "-Werror", "-pedantic", "-I.", "-o", (char *)output};
     size_t count = 11;
-    if (standalone) args[count++] = "-static";
+    if (standalone) { args[count++] = "-static"; args[count++] = "-s"; }
     for (size_t i = 0; sources[i]; i++) {
         if (count == 127) return 1;
         args[count++] = sources[i];
@@ -25,7 +25,7 @@ static int compile_sources(const char *cc, const char *output, int standalone,
     return run(args);
 }
 #define BUILD(out, ...) compile_sources("cc", out, 0, (char *const[]){__VA_ARGS__, NULL})
-#define DEVICE(out, ...) compile_sources("aarch64-linux-gnu-gcc", out, 1, (char *const[]){__VA_ARGS__, NULL})
+#define DEVICE(out, ...) compile_sources("out/musl/bin/musl-gcc", out, 1, (char *const[]){__VA_ARGS__, NULL})
 
 static int build_tools(void)
 {

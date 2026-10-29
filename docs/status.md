@@ -43,3 +43,29 @@ SHA256 at source, on-device and after download. Boot0 download fails; the old
 daemon remains usable. Hypothesis: the experimental USB path cannot sustain the
 maximum frame burst. Falsifier: the same failure remains with 64 KiB chunks.
 Change: bound default client chunks to 64 KiB; keep the 1 MiB protocol ceiling.
+
+Repeat: boot0 and boot1 (4 MiB each) now match the earlier verified hashes, and
+the 3 MiB fixture still round-trips correctly. The burst hypothesis is supported;
+the precise kernel/USB failure mechanism is not yet established.
+
+## 2026-10-29T19:30:58Z / 005 / native ROM information probe
+
+Hypothesis: the new usbfs C probe can synchronize with MT8163 during a controlled
+reboot window, query hardware/security state and return to the existing installation.
+Falsifier: no handshake, incorrect query decoding, unexpected state change, or no
+return of the old daemon after a physical power reset.
+
+Change: run the bounded probe while requesting an orderly reboot. No flash/memory
+writes are implemented in this probe. Owner is present for physical button recovery.
+Preflight: synthetic descriptor/query tests pass; both current boot-region copies
+match the verified private backups. Result: pending live ROM/preloader observation.
+
+Warm reboot: existing daemon returned on the same installed kernel; no successful
+ROM session was observed. Owner-assisted physical entry is the next bounded test.
+
+## 2026-10-29T19:28:18Z / 003 / upstream audit result
+
+Official kernel.org archive hash matched its published checksum. ARM64 tinyconfig
+build passed remotely. The generic 1.9 MiB Image was not flashed. No mt8163 source
+matches were found in the scanned DTS/binding/driver directories. The new kernel
+therefore remains a toolchain baseline, not accepted P80h hardware support.
