@@ -2,6 +2,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "src/rom/rom.h"
 #include <dirent.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
@@ -35,7 +36,11 @@ int rom_usb_open(struct rom_endpoint *endpoints)
         count++; snprintf(path, sizeof(path), "/dev/bus/usb/%03u/%03u", bus, device);
     }
     closedir(d);
-    if (count != 1) { fputs("Need exactly one MTK ROM/preloader device (0e8d:0003/2000).\n", stderr); return -1; }
+    if (count != 1) {
+        errno = count ? EEXIST : ENODEV;
+        if (count) fputs("Ambiguous MTK ROM/preloader devices; refusing to select one.\n", stderr);
+        return -1;
+    }
     int fd = open(path, O_RDWR | O_CLOEXEC);
     if (fd < 0) { perror("ROM USB access"); return -1; }
     if (rom_usb_claim(fd, endpoints)) { rom_usb_close(fd, endpoints); return -1; }
