@@ -12,7 +12,12 @@ int link_request(struct link_session *s, uint16_t op, unsigned char *data, uint3
     *reply = (struct wire_message){0};
     if (s->sequence == UINT32_MAX) return 1;
     struct wire_message request = {op, 0, 0, ++s->sequence, size, data};
-    if (wire_send(s->fd, &request) || wire_recv(s->fd, reply)) return 1;
+    if (wire_send(s->fd, &request)) { fputs("P80H/1 request send failed.\n", stderr); return 1; }
+    int received = wire_recv(s->fd, reply);
+    if (received) {
+        fprintf(stderr, "P80H/1 response receive failed: code=%d opcode=%u id=%u\n",
+                received, op, request.id); return 1;
+    }
     if (reply->op != op || reply->id != request.id || reply->flags != WIRE_REPLY || reply->status) {
         fprintf(stderr, "P80H/1 response rejected: opcode=%u status=%u\n", reply->op, reply->status);
         free(reply->body); reply->body = NULL; return 1;

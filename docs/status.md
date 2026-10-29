@@ -37,3 +37,9 @@ Rollback: stop that recorded process; the original daemon on port 4444 remains.
 
 Preflight: both Codespaces pass strict builds and P80H/1 host integration tests.
 Result: pending live USB acceptance; do not remove the original daemon yet.
+
+Live: binary ping/status/shell exit 7 pass. A 3 MiB random-file round trip matches
+SHA256 at source, on-device and after download. Boot0 download fails; the old
+daemon remains usable. Hypothesis: the experimental USB path cannot sustain the
+maximum frame burst. Falsifier: the same failure remains with 64 KiB chunks.
+Change: bound default client chunks to 64 KiB; keep the 1 MiB protocol ceiling.

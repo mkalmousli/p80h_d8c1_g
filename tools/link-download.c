@@ -24,7 +24,7 @@ int link_download(struct link_session *s, const char *remote, const char *local)
     int fd = open(local, O_WRONLY | O_CREAT | O_EXCL, 0600), result = 1;
     if (fd < 0) { perror(local); return 1; }
     while (offset < total) {
-        uint32_t want = total - offset > WIRE_LIMIT - 8 ? WIRE_LIMIT - 8 : (uint32_t)(total - offset);
+        uint32_t want = total - offset > WIRE_CHUNK ? WIRE_CHUNK : (uint32_t)(total - offset);
         wire_put64(request, offset); wire_put32(request + 8, want);
         if (link_request(s, WIRE_GET, request, (uint32_t)length + 12, &reply)) goto done;
         if (reply.size != want + 8 || wire_u64(reply.body) != total) { free(reply.body); goto done; }

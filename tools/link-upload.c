@@ -22,7 +22,7 @@ int link_upload(struct link_session *s, const char *local, const char *remote)
     wire_put16(body, (uint16_t)length); memcpy(body + 2, remote, length);
     uint64_t total = (uint64_t)st.st_size, offset = 0;
     do {
-        size_t want = total - offset > WIRE_LIMIT - overhead ? WIRE_LIMIT - overhead : (size_t)(total - offset);
+        size_t want = total - offset > WIRE_CHUNK ? WIRE_CHUNK : (size_t)(total - offset);
         wire_put64(body + 2 + length, offset); wire_put64(body + 10 + length, total);
         if (fread(body + overhead, 1, want, f) != want) goto done;
         struct wire_message reply;

@@ -27,13 +27,14 @@ int wire_recv(int fd, struct wire_message *m)
 {
     unsigned char header[WIRE_HEADER];
     *m = (struct wire_message){0};
-    if (transfer(fd, header, sizeof(header), 0) || wire_decode(header, m)) return 1;
+    if (transfer(fd, header, sizeof(header), 0)) return 1;
+    if (wire_decode(header, m)) return 2;
     if (m->size) {
         m->body = malloc(m->size);
-        if (!m->body) return 1;
+        if (!m->body) return 3;
     }
-    if (transfer(fd, m->body, m->size, 0) || wire_crc(m->body, m->size) != wire_u32(header + 20)) {
-        free(m->body); m->body = NULL; return 1;
-    }
+    int result = transfer(fd, m->body, m->size, 0) ? 4 :
+        wire_crc(m->body, m->size) != wire_u32(header + 20) ? 5 : 0;
+    if (result) { free(m->body); m->body = NULL; return result; }
     return 0;
 }
