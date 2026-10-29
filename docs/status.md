@@ -75,6 +75,15 @@ flash commands, identity queries or persistent writes. Owner is ready to use the
 existing button menu as a physical fallback. Recovery is verified only when the
 original daemon responds again.
 
+Remote build and all C checks passed, including reset-sequence mocks. On the
+attached tablet the preloader enumerated as 0e8d:2000, but repeated ROM sync
+attempts returned stage 1 / no chip ID; the old daemon was unreachable. The
+reset command was never issued. This falsifies the assumption that a stale
+preloader enumeration is enough to perform a reset. Next hypothesis: selecting
+Normal in the physical boot menu restores Linux; falsifier: daemon unavailable
+after its normal boot interval. Reattempt the timed ROM probe only during a new
+controlled reboot, and send WDT reset only after fresh MT8163/security reads.
+
 ## 2026-10-29T19:28:18Z / 003 / upstream audit result
 
 Official kernel.org archive hash matched its published checksum. ARM64 tinyconfig
