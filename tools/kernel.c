@@ -30,7 +30,7 @@ int main(void)
         RUN("git", "clone", "--depth=1", "--branch", tag, url, "local/linux")) return 1;
     if (RUN_TO("out/kernel-revision", "git", "-C", "local/linux", "rev-parse", "HEAD")) return 1;
     FILE *f = fopen("out/kernel-revision", "r");
-    char actual[128];
+    char actual[128] = {0};
     if (!f) return 1;
     int ok = fgets(actual, sizeof(actual), f) != NULL;
     fclose(f); actual[strcspn(actual, "\r\n")] = 0;

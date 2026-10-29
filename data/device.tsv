@@ -1,0 +1,9 @@
+# property|value
+Device|Teclast P80h (MT8163 board)
+Architecture|ARM64 / Cortex-A53
+Display|800 by 1280 framebuffer; 32 bits per pixel
+Internal storage|15140864 sectors of 512 bytes
+Boot storage|Two eMMC boot regions of 8192 sectors each
+Observed kernel|6.12.99-p80h-dirty (existing installation)
+Target OS|Plain Alpine Linux
+Public release policy|FOSS artifacts; no stock files or device identifiers

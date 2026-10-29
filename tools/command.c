@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
+/* Read a bounded response, strip only its final protocol trailer, return status. */
 int daemon_command(const char *command)
 {
     enum { LIMIT = 4 * 1024 * 1024 };

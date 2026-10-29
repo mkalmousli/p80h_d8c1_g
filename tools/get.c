@@ -9,6 +9,7 @@
 #include <string.h>
 #include <unistd.h>
 
+/* Frame header first, then stream exact bytes into a new owner-only local file. */
 static int get(const char *remote, const char *local, uint64_t offset, uint64_t size)
 {
     char header[1024], sizebuf[32], buffer[65536];

@@ -31,6 +31,7 @@ ssize_t net_read(int fd, void *data, size_t size)
     return n;
 }
 
+/* Open the isolated daemon channel: 5-second connect and bounded socket I/O. */
 int daemon_open(const char *header)
 {
     const char *endpoint = getenv("P80H_DAEMON");

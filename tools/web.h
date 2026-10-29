@@ -22,4 +22,6 @@ int graph_generate(const char *data_path, const char *svg_path, const char *titl
 int feature_graph(void);
 int gallery_entries(FILE *);
 int gallery_generate(void);
+int summary_entries(FILE *);
+int device_entries(FILE *);
 #endif

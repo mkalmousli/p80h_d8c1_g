@@ -6,6 +6,7 @@
 static int compile(const char *output, const char *a, const char *b,
                    const char *c)
 {
+    /* Bootstrap small tools without a second build language or shell expansion. */
     char *args[] = {"cc", "-std=c11", "-O2", "-g", "-Wall", "-Wextra",
         "-Werror", "-pedantic", "-I.", "-o", (char *)output,
         (char *)a, (char *)b, (char *)c, NULL};
@@ -22,12 +23,13 @@ static int tools(void)
             "-o", "out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
             "tools/html.c", "tools/inline.c", "tools/markdown.c", "tools/library.c",
             "tools/feature.c", "tools/template.c", "tools/maps.c", "tools/graph-data.c",
-            "tools/graph-svg.c", "tools/feature-graph.c", "tools/gallery.c") ||
+            "tools/graph-svg.c", "tools/feature-graph.c", "tools/gallery.c", "tools/summary.c") ||
         compile("out/package", "tools/package.c", NULL, NULL);
 }
 
 int main(int argc, char **argv)
 {
+    /* Refuse accidental local builds; the PC owns USB and transfers only. */
     const char *codespaces = getenv("CODESPACES");
     const char *actions = getenv("GITHUB_ACTIONS");
     const char *target = argc == 2 ? argv[1] : "help";
