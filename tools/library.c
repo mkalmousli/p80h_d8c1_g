@@ -32,8 +32,10 @@ static int document(const char *path, FILE *index)
     fputs("</article>", out); page_foot(out);
     failed |= ferror(in) || ferror(out);
     fclose(in); failed |= fclose(out) != 0;
-    fputs("<li><a href=\"files/", index); html(index, path); fputs(".html\">", index);
-    html(index, path); fputs("</a></li>\n", index);
+    if (is_markdown || !strncmp(path, "data/", 5)) {
+        fputs("<li><a href=\"files/", index); html(index, path); fputs(".html\">", index);
+        html(index, path); fputs("</a></li>\n", index);
+    }
     return failed;
 }
 
@@ -49,12 +51,12 @@ int library_pages(void)
         close(pipes[1]); execlp("git", "git", "ls-files", (char *)NULL); _exit(127);
     }
     close(pipes[1]);
-    FILE *paths = fdopen(pipes[0], "r"), *index = fopen("out/site/library.html", "w");
+    FILE *paths = fdopen(pipes[0], "r"), *index = fopen("out/site/docs.html", "w");
     if (!paths || !index) { if (paths) fclose(paths); else close(pipes[0]); return 1; }
-    page_head(index, "Repository library");
-    fputs("<p class=eyebrow>DOCS / DATA / CODE</p><h1>The project, readable.</h1>"
-          "<p>Generated from every tracked text file. Documentation is rendered; "
-          "source and data remain inspectable. Private files are never included.</p>"
+    page_head(index, "Documentation");
+    fputs("<p class=eyebrow>SPECIFICATIONS / DATA / EXPERIMENTS</p><h1>Documentation.</h1>"
+          "<p>Versioned specifications and evidence. Read the journal for the story, "
+          "or choose a document below for technical detail.</p>"
           "<p><a href=files/README.md.html>Start here</a> · "
           "<a href=files/docs/status.md.html>Bring-up journal</a></p><ul class=filelist>", index);
     char path[1024];

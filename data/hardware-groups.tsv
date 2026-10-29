@@ -1,0 +1,7 @@
+# id|title|feature IDs (each feature belongs to exactly one group)
+boot|Boot and operating system|rom,dram,secure,boot-manager,alpine
+compute|Processing and clocks|cpu,clocks,cpufreq,thermal,gpu,video
+power|Power and reliability|power,charger,rtc,watchdog,suspend
+storage|Storage|emmc,sd
+interface|USB and human interface|usb-device,usb-host,display,backlight,touch,keys,accelerometer
+media|Connectivity and media|wifi,bluetooth,fm,audio,camera

@@ -16,7 +16,7 @@ int main(void)
     FILE *revision = fopen("out/site/revision.txt", "r");
     if (!revision || !fgets(project.revision, sizeof(project.revision), revision)) return 1;
     fclose(revision); project.revision[strcspn(project.revision, "\r\n")] = 0;
-    if (RUN("cp", "-R", "site/assets", "site/style.css", "site/.nojekyll", "out/site/")) return 1;
+    if (RUN("cp", "-R", "site/assets", "site/style.css", "site/reference.css", "site/.nojekyll", "out/site/")) return 1;
     FILE *input = fopen("site/index.html", "r");
     FILE *output = fopen("out/site/index.html", "w");
     FILE *docs = fopen("out/progress.md", "w");
@@ -29,7 +29,7 @@ int main(void)
     failed |= feature_markdown(docs);
     failed |= ferror(input) || ferror(output) || ferror(docs);
     fclose(input); failed |= fclose(output) != 0; failed |= fclose(docs) != 0;
-    if (failed || feature_pages(NULL) || library_pages() || maps_generate() || gallery_generate()) return 1;
+    if (failed || feature_pages(NULL) || library_pages() || maps_generate() || gallery_generate() || journal_generate()) return 1;
     puts("Site: generated feature pages, repository library, progress and SVG maps.");
     return 0;
 }

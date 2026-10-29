@@ -32,13 +32,12 @@ ssize_t net_read(int fd, void *data, size_t size)
 }
 
 /* Open the isolated daemon channel: 5-second connect and bounded socket I/O. */
-int daemon_open(const char *header)
+int tcp_open(const char *endpoint)
 {
-    const char *endpoint = getenv("P80H_DAEMON");
     char host[64], *colon, *end;
     struct sockaddr_in addr = {.sin_family = AF_INET};
     if (!endpoint) endpoint = "172.16.42.1:4444";
-    if (strlen(endpoint) >= sizeof(host) || strpbrk(header, "\r\n")) return -1;
+    if (strlen(endpoint) >= sizeof(host)) return -1;
     strcpy(host, endpoint);
     colon = strrchr(host, ':');
     if (!colon) return -1;
@@ -62,9 +61,18 @@ int daemon_open(const char *header)
     struct timeval timeout = {35, 0};
     if (setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) ||
         setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout))) goto fail;
-    if (net_send(fd, header, strlen(header)) || net_send(fd, "\n", 1)) goto fail;
     return fd;
 fail:
     close(fd);
     return -1;
+}
+
+int daemon_open(const char *header)
+{
+    if (strpbrk(header, "\r\n")) return -1;
+    int fd = tcp_open(getenv("P80H_DAEMON"));
+    if (fd >= 0 && (net_send(fd, header, strlen(header)) || net_send(fd, "\n", 1))) {
+        close(fd); return -1;
+    }
+    return fd;
 }

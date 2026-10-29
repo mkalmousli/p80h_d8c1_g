@@ -25,4 +25,5 @@ int gallery_generate(void);
 int summary_entries(FILE *);
 int device_entries(FILE *);
 int feature_markdown(FILE *);
+int journal_generate(void);
 #endif

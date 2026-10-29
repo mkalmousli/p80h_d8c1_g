@@ -43,7 +43,7 @@ static int inspect(const char *path)
     return 0;
 }
 
-int main(int argc, char **argv)
+int legacy_main(int argc, char **argv)
 {
     if (argc == 2 && !strcmp(argv[1], "usb")) return usb_list();
     if (argc == 2 && !strcmp(argv[1], "status")) return daemon_command("STATUS");

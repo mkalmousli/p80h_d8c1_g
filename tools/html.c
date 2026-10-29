@@ -55,8 +55,10 @@ void page_head(FILE *f, const char *title)
           "<a class=brand href=./><img src=assets/mark.svg width=28 height=28 alt=\"\">", f);
     html(f, project.name);
     fputs("</a><nav aria-label=Main><a href=./#progress>Progress</a>"
-          "<a href=hardware.html>Hardware</a><a href=library.html>Library</a>"
-          "<a href=diagrams.html>Maps</a></nav></header><main id=main class=\"wrap document\">", f);
+          "<a href=hardware.html>Hardware</a><a href=journal.html>Journal</a>"
+          "<a href=diagrams.html>Maps</a><a href=docs.html>Docs</a><a href=\"", f);
+    html(f, project.repo);
+    fputs("\">GitHub ↗</a></nav></header><main id=main class=\"wrap document\">", f);
 }
 
 void page_foot(FILE *f)

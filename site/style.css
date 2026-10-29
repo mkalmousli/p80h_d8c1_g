@@ -1,3 +1,4 @@
+@import url("reference.css");
 :root{color-scheme:dark;--bg:#101416;--surface:#192024;--text:#dce5e3;--muted:#94a5a2;--accent:#83c7a6;--line:#2c373b}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:2rem}

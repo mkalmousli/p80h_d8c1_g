@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 int daemon_open(const char *header);
+int tcp_open(const char *endpoint);
 int net_send(int fd, const void *data, size_t size);
 ssize_t net_read(int fd, void *data, size_t size);
 int daemon_command(const char *command);

@@ -23,12 +23,10 @@ int maps_generate(void)
         "sanitized results update documentation and this site.</p>"
         "<img class=system-map src=assets/development-flow.svg alt=\"Remote build and tablet evidence loop\">"
         "<p><a href=files/data/development-flow.tsv.html>Inspect graph data</a></p>"
-        "<h2>What blocks what?</h2><p>Each feature record names its next prerequisite. "
-        "This map is derived directly from the driver inventory. "
-        "Open the SVG to zoom into the complete diagram.</p>"
-        "<a href=assets/hardware-dependencies.svg><img class=system-map "
-        "src=assets/hardware-dependencies.svg alt=\"Hardware dependencies and support states\"></a>"
-        "<p><a href=hardware.html>Read individual driver records</a></p>", out);
+        "<h2>What blocks what?</h2><p>Explore dependencies by subsystem. "
+        "Each feature expands into a vertical prerequisite chain and its next dependents. "
+        "The view adapts to a phone without a wide diagram.</p>"
+        "<p><a class=button href=hardware-map.html>Explore the dependency map →</a></p>", out);
     page_foot(out);
     int failed = ferror(out); failed |= fclose(out) != 0;
     return failed;

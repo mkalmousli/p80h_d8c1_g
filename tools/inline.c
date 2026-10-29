@@ -8,20 +8,20 @@ static void link(FILE *f, const char *target, const char *source)
     if (!strncmp(target, "https://", 8) || !strncmp(target, "http://", 7) || target[0] == '#') {
         html(f, target); return;
     }
-    if (strchr(target, ':') || target[0] == '/') { fputs("library.html", f); return; }
+    if (strchr(target, ':') || target[0] == '/') { fputs("docs.html", f); return; }
     char path[1024], normalized[1024] = "", *parts[100];
     size_t depth = 0;
     const char *slash = strrchr(source, '/');
     int n = snprintf(path, sizeof(path), "%.*s%s", slash ? (int)(slash - source + 1) : 0,
                      source, target);
-    if (n < 0 || (size_t)n >= sizeof(path)) { fputs("library.html", f); return; }
+    if (n < 0 || (size_t)n >= sizeof(path)) { fputs("docs.html", f); return; }
     char *p = path;
     while (*p) {
         char *end = strchr(p, '/');
         if (end) *end = 0;
-        if (!strcmp(p, "..")) { if (!depth) { fputs("library.html", f); return; } depth--; }
+        if (!strcmp(p, "..")) { if (!depth) { fputs("docs.html", f); return; } depth--; }
         else if (*p && strcmp(p, ".")) {
-            if (depth == 100) { fputs("library.html", f); return; }
+            if (depth == 100) { fputs("docs.html", f); return; }
             parts[depth++] = p;
         }
         if (!end) break;

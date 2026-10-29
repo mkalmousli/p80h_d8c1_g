@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: MIT */
-#include "graph.h"
+#include "feature-map.h"
 #include <string.h>
-
-struct inventory { struct graph graph; char dependency[64][64]; unsigned marks[64]; };
 
 static int collect(char **v, size_t count, void *context)
 {
@@ -41,9 +39,5 @@ int feature_graph(void)
     struct inventory s = {0};
     if (table_read("data/features.tsv", 8, collect, &s)) return 1;
     for (unsigned i = 0; i < s.graph.count; i++) if (depth(&s, i)) return 1;
-    FILE *f = fopen("out/site/assets/hardware-dependencies.svg", "w");
-    if (!f) return 1;
-    graph_draw(f, &s.graph, "Hardware dependency and support map");
-    int failed = ferror(f); failed |= fclose(f) != 0;
-    return failed;
+    return feature_map(&s);
 }
