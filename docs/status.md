@@ -48,34 +48,6 @@ Repeat: boot0 and boot1 (4 MiB each) now match the earlier verified hashes, and
 the 3 MiB fixture still round-trips correctly. The burst hypothesis is supported;
 the precise kernel/USB failure mechanism is not yet established.
 
-## 2026-10-29T19:55:00Z / 006 / bounded preloader watchdog reset
-
-Hypothesis: after the identity-free MT8163 query, a C-only reset command using
-the documented MT8163 watchdog registers will leave preloader and return Linux.
-Falsifier: bad echo/status, protected-memory flags, no USB reset request, or the
-existing daemon fails to return within 60 seconds.
-
-Change: allow only watchdog MODE/SWRST accesses; no caller-supplied addresses,
-flash commands, identity queries or persistent writes. Owner is ready to use the
-existing button menu as a physical fallback. Recovery is verified only when the
-original daemon responds again.
-
-Remote build and all C checks passed, including reset-sequence mocks. On the
-attached tablet the preloader enumerated as 0e8d:2000, but repeated ROM sync
-attempts returned stage 1 / no chip ID; the old daemon was unreachable. The
-reset command was never issued. This falsifies the assumption that a stale
-preloader enumeration is enough to perform a reset. Next hypothesis: selecting
-Normal in the physical boot menu restores Linux; falsifier: daemon unavailable
-after its normal boot interval. Reattempt the timed ROM probe only during a new
-controlled reboot, and send WDT reset only after fresh MT8163/security reads.
-
-Recovery: owner selected Normal in the physical boot menu; the original daemon
-responded again. Next hypothesis: start `rom-reset --wait` before an orderly
-reboot, so it receives a fresh preloader session, validates MT8163/security, and
-returns the existing Linux daemon. Falsifier: query does not complete, reset is
-rejected, or the daemon does not respond within 60 seconds. No command is sent
-from a stale USB enumeration.
-
 ## 2026-10-29T20:02:00Z / 007 / private eMMC read capacity
 
 Hypothesis: a 256 Ki-request P80H/1 session can transfer the full 7.75 GiB
@@ -95,4 +67,11 @@ Hypothesis: four ordered GET requests in flight improve USB block-read speed at
 least 2x while preserving each response ID, length, total size and CRC. A new
 explicit resume command can continue a private partial file without overwriting
 an existing destination. Falsifier: synthetic round-trip corruption, live boot
-region mismatch, or throughput below 2 MiB/s. Device access stays read-only.
+region mismatch, throughput below 2 MiB/s, or loss of the existing service.
+Device access stays read-only.
+
+Remote C tests passed. A 4 MiB pipelined boot-region read matched the existing
+backup byte for byte. During sustained pipelined reads, transfer speed fell below
+2 MiB/s and both USB services became briefly unavailable. Stopping the client
+restored them; the partial local file was retained. The speed hypothesis is
+rejected. Keep the window at one request and test explicit resume sequentially.

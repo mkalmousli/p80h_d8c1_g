@@ -8,16 +8,14 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#define WINDOW 4
-
 static int download(struct link_session *s, const char *remote, const char *local, int resume)
 {
     size_t length = strlen(remote);
     if (!length || length > 1023) return 1;
-    unsigned char body[WINDOW][1035] = {{0}};
-    memcpy(body[0] + 12, remote, length);
+    unsigned char body[1035] = {0};
+    memcpy(body + 12, remote, length);
     struct wire_message reply;
-    if (link_request(s, WIRE_GET, body[0], (uint32_t)length + 12, &reply)) return 1;
+    if (link_request(s, WIRE_GET, body, (uint32_t)length + 12, &reply)) return 1;
     if (reply.size != 8) { free(reply.body); return 1; }
     uint64_t total = wire_u64(reply.body), offset = 0;
     free(reply.body);
@@ -32,36 +30,20 @@ static int download(struct link_session *s, const char *remote, const char *loca
     if (resume) offset = (uint64_t)st.st_size;
     if (lseek(fd, (off_t)offset, SEEK_SET) < 0) goto done;
     while (offset < total) {
-        struct wire_message sent[WINDOW]; unsigned count = 0;
-        while (count < WINDOW && offset + (uint64_t)count * WIRE_CHUNK < total) {
-            uint64_t at = offset + (uint64_t)count * WIRE_CHUNK;
-            uint32_t want = total - at > WIRE_CHUNK ? WIRE_CHUNK : (uint32_t)(total - at);
-            wire_put64(body[count], at); wire_put32(body[count] + 8, want);
-            memcpy(body[count] + 12, remote, length);
-            if (s->sequence == UINT32_MAX) goto done;
-            sent[count] = (struct wire_message){WIRE_GET, 0, 0, ++s->sequence,
-                (uint32_t)length + 12, body[count]};
-            if (wire_send(s->fd, &sent[count])) goto done;
-            count++;
+        uint32_t bytes = total - offset > WIRE_CHUNK ? WIRE_CHUNK : (uint32_t)(total - offset);
+        wire_put64(body, offset); wire_put32(body + 8, bytes);
+        if (link_request(s, WIRE_GET, body, (uint32_t)length + 12, &reply)) goto done;
+        if (reply.size != bytes + 8 || wire_u64(reply.body) != total) {
+            free(reply.body); goto done;
         }
-        for (unsigned i = 0; i < count; i++) {
-            if (wire_recv(s->fd, &reply)) goto done;
-            uint64_t at = offset + (uint64_t)i * WIRE_CHUNK;
-            uint32_t bytes = total - at > WIRE_CHUNK ? WIRE_CHUNK : (uint32_t)(total - at);
-            if (reply.op != WIRE_GET || reply.id != sent[i].id || reply.flags != WIRE_REPLY ||
-                reply.status || reply.size != bytes + 8 || wire_u64(reply.body) != total) {
-                free(reply.body); goto done;
-            }
-            size_t written = 0;
-            while (written < bytes) {
-                ssize_t n = write(fd, reply.body + 8 + written, bytes - written);
-                if (n < 0 && errno == EINTR) continue;
-                if (n <= 0) { free(reply.body); goto done; }
-                written += (size_t)n;
-            }
-            free(reply.body);
+        size_t written = 0;
+        while (written < bytes) {
+            ssize_t n = write(fd, reply.body + 8 + written, bytes - written);
+            if (n < 0 && errno == EINTR) continue;
+            if (n <= 0) { free(reply.body); goto done; }
+            written += (size_t)n;
         }
-        offset += (uint64_t)count * WIRE_CHUNK;
+        free(reply.body); offset += bytes;
     }
     result = fsync(fd) != 0;
 done:

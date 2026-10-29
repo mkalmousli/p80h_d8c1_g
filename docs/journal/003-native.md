@@ -20,6 +20,19 @@ watchdog reset was then sent after the fresh query. USB briefly enumerated as
 `0e8d:0003`; the original Linux daemon returned. This verifies reset-and-return
 from the observed preloader path, not erased-device recovery or a new boot chain.
 
+## 2026-10-29T19:55Z / Read-only sync missed; recover through Normal
+
+The USB device remained enumerated as preloader, but retries yielded no chip ID.
+The reset command was not sent. Selecting Normal in the boot menu returned the
+installed Linux daemon. We then started the C reset probe before the next orderly
+reboot, rather than trusting a stale USB enumeration.
+
+## 2026-10-29T20:00Z / Fresh query and watchdog return
+
+The timed probe read MT8163 (`8a00`; SBC/SLA/DAA all clear), then only changed
+the watchdog MODE and SWRST registers. USB enumerated briefly as `0e8d:0003` and
+the existing daemon returned. No partition writes or stock restore were involved.
+
 The factory ROM is fabricated inside the processor. Our stock-free target covers
 all writable stages and required loadable firmware; replacing that physical ROM
 would require different silicon. No private donor file may be an installer input.
