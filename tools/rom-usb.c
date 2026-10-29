@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <linux/usbdevice_fs.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
@@ -42,15 +43,25 @@ int rom_usb_transfer(void *context, int writing, unsigned char *data, size_t siz
 {
     struct rom_usb *usb = context;
     while (size) {
+        if (!writing && usb->position < usb->available) {
+            size_t count = usb->available - usb->position;
+            if (count > size) count = size;
+            memcpy(data, usb->receive + usb->position, count);
+            usb->position += count; data += count; size -= count;
+            continue;
+        }
+        /* usbfs must receive whole packets even when the protocol needs one byte. */
         struct usbdevfs_bulktransfer bulk = {.ep = writing ? usb->endpoints.output : usb->endpoints.input,
-            .len = (unsigned)size, .timeout = 1000, .data = data};
+            .len = writing ? (unsigned)size : sizeof(usb->receive), .timeout = 1000,
+            .data = writing ? data : usb->receive};
         int n = ioctl(usb->fd, USBDEVFS_BULK, &bulk);
         if (n < 0 && errno == EINTR) continue;
-        if (n <= 0 || (size_t)n > size) {
+        if (n <= 0 || (unsigned)n > bulk.len) {
             fprintf(stderr, "ROM bulk %s failed: endpoint=%02x bytes=%d errno=%d\n",
                     writing ? "write" : "read", bulk.ep, n, errno); return 1;
         }
-        size -= (size_t)n; data += n;
+        if (writing) { size -= (size_t)n; data += n; }
+        else { usb->position = 0; usb->available = (size_t)n; }
     }
     return 0;
 }

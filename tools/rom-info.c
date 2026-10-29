@@ -11,7 +11,7 @@ int rom_info_cli(int wait)
     clock_gettime(CLOCK_MONOTONIC, &start);
     if (wait) fputs("Waiting up to 60 seconds for MT8163 ROM/preloader...\n", stderr);
     do {
-        struct rom_usb usb;
+        struct rom_usb usb = {0};
         usb.fd = rom_usb_open(&usb.endpoints);
         if (usb.fd >= 0) {
             struct rom_transport transport = {&usb, rom_usb_transfer};

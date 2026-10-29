@@ -12,5 +12,8 @@ int rom_info_cli(int wait);
 int rom_usb_open(struct rom_endpoint *);
 int rom_usb_transfer(void *, int, unsigned char *, size_t);
 void rom_usb_close(int, const struct rom_endpoint *);
-struct rom_usb { int fd; struct rom_endpoint endpoints; };
+struct rom_usb {
+    int fd; struct rom_endpoint endpoints;
+    unsigned char receive[1024]; size_t position, available;
+};
 #endif
