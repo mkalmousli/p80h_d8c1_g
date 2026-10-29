@@ -18,9 +18,10 @@ int link_cli(int argc, char **argv)
         op = WIRE_EXEC; body = (unsigned char *)argv[2];
         if (strlen(argv[2]) > 4096) return 2;
         length = (uint32_t)strlen(argv[2]);
-    } else if (argc == 4 && (!strcmp(argv[1], "get") || !strcmp(argv[1], "put"))) op = WIRE_GET;
+    } else if (argc == 4 && (!strcmp(argv[1], "get") || !strcmp(argv[1], "resume") ||
+                             !strcmp(argv[1], "put"))) op = WIRE_GET;
     else {
-        puts("p80h P80H/1: ping | status | sh 'COMMAND' | get REMOTE LOCAL | put LOCAL /tmp/p80h-NAME\n"
+        puts("p80h P80H/1: ping | status | sh 'COMMAND' | get REMOTE LOCAL | resume REMOTE LOCAL | put LOCAL /tmp/p80h-NAME\n"
              "Local: usb | inspect IMAGE | gpt SNAPSHOT | rom-info\nTransitional text endpoint: p80h legacy COMMAND");
         return argc == 1 ? 0 : 2;
     }
@@ -29,6 +30,7 @@ int link_cli(int argc, char **argv)
     int result = 1;
     if (argc == 4) {
         result = !strcmp(argv[1], "get") ? link_download(&session, argv[2], argv[3]) :
+            !strcmp(argv[1], "resume") ? link_download_resume(&session, argv[2], argv[3]) :
             link_upload(&session, argv[2], argv[3]);
         close(session.fd); return result;
     }

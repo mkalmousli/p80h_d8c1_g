@@ -8,5 +8,6 @@ int link_request(struct link_session *, uint16_t, unsigned char *, uint32_t,
                  struct wire_message *reply);
 int link_cli(int argc, char **argv);
 int link_download(struct link_session *, const char *remote, const char *local);
+int link_download_resume(struct link_session *, const char *remote, const char *local);
 int link_upload(struct link_session *, const char *local, const char *remote);
 #endif

@@ -33,6 +33,14 @@ int main(void)
     int c;
     while ((c = fgetc(a)) != EOF) assert(c == fgetc(b));
     assert(fgetc(b) == EOF && !ferror(a) && !ferror(b)); fclose(a); fclose(b);
+    assert(!unlink("out/binary-result"));
+    a = fopen("out/binary-source", "rb"); b = fopen("out/binary-result", "wb"); assert(a && b);
+    for (unsigned i = 0; i < 12345; i++) assert(fputc(fgetc(a), b) != EOF);
+    fclose(a); fclose(b);
+    assert(!link_download_resume(&session, target, "out/binary-result"));
+    a = fopen("out/binary-source", "rb"); b = fopen("out/binary-result", "rb"); assert(a && b);
+    while ((c = fgetc(a)) != EOF) assert(c == fgetc(b));
+    assert(fgetc(b) == EOF); fclose(a); fclose(b);
     assert(!unlink(target));
     /* A disconnect during an upload must not make a partial destination visible. */
     size_t length = strlen(target);

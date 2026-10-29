@@ -88,3 +88,11 @@ Change: raise the per-session request cap from 65536 to 262144, enough for
 The live filesystem may change during a raw block read, so this is not a
 coherent filesystem snapshot or restore proof. Raw data stays local; it is not
 sent to Codespaces for hashing or analysis.
+
+## 2026-10-29T20:05:00Z / 008 / windowed binary reads
+
+Hypothesis: four ordered GET requests in flight improve USB block-read speed at
+least 2x while preserving each response ID, length, total size and CRC. A new
+explicit resume command can continue a private partial file without overwriting
+an existing destination. Falsifier: synthetic round-trip corruption, live boot
+region mismatch, or throughput below 2 MiB/s. Device access stays read-only.

@@ -42,8 +42,11 @@ and output to payload limit minus four bytes. Timeout/output-limit errors kill
 its process group. Binary output and command newlines need no special escaping.
 
 GET supports regular files and block devices. A zero limit queries size only.
-Each chunk is at most payload limit minus eight bytes. Size changes cause the
-client to fail; stable size does not make a mounted filesystem a coherent snapshot.
+The C client pipelines four ordered 64 KiB GETs and validates each reply ID,
+length, total and CRC. `resume REMOTE LOCAL` continues an existing regular partial
+file at its current length; ordinary `get` still refuses every existing path.
+Size changes cause the client to fail; stable size does not make a mounted
+filesystem a coherent snapshot.
 
 PUT allows one in-flight upload per connection, only to /tmp/p80h-NAME without
 subdirectories. Offset/total must remain consistent; total is at most 16 GiB.
