@@ -10,7 +10,9 @@ generation diverges from the progress record, or private inputs enter artifacts.
 
 Change: new independent repository; no old source or device images imported.
 
-Verification: pending remote builds, parser/menu tests, source policy and site checks.
+Verification: Actions and both Codespaces pass strict C builds, parser/menu and
+daemon framing tests. Generated library, feature pages and dependency SVGs pass
+data and Markdown safety tests. Run 002 verifies C transport on the tablet.
 
 Hardware: existing CLI reaches the installed daemon; live aarch64 and MT8163 model
 observed. Existing kernel reports 6.12.99-p80h-dirty. No partition writes performed.

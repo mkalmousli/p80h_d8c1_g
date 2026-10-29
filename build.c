@@ -22,7 +22,7 @@ static int tools(void)
             "-o", "out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
             "tools/html.c", "tools/inline.c", "tools/markdown.c", "tools/library.c",
             "tools/feature.c", "tools/template.c", "tools/maps.c", "tools/graph-data.c",
-            "tools/graph-svg.c", "tools/feature-graph.c") ||
+            "tools/graph-svg.c", "tools/feature-graph.c", "tools/gallery.c") ||
         compile("out/package", "tools/package.c", NULL, NULL);
 }
 
@@ -54,6 +54,12 @@ int main(int argc, char **argv)
     if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
         "-o", "out/web-test", "tests/web.c", "tools/table.c", "tools/html.c",
         "tools/inline.c", "tools/markdown.c", "tools/graph-data.c") || RUN("out/web-test")) return 1;
+    if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
+        "-o", "out/upload-test-bin", "tests/upload.c", "tools/net.c", "tools/put.c") ||
+        RUN("out/upload-test-bin")) return 1;
+    if (RUN("cc", "-std=c11", "-Wall", "-Wextra", "-Werror", "-pedantic", "-I.",
+        "-o", "out/linkcheck", "tools/links.c", "tools/html.c", "tools/table.c") ||
+        RUN("out/linkcheck")) return 1;
     if (!strcmp(target, "package")) return RUN("out/package");
     return 0;
 }

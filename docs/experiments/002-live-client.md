@@ -17,4 +17,10 @@ hash-verified and applied as a reversible wallpaper, producing a real screenshot
 Falsifier: upload hash differs, desktop fails to apply it, or screenshot differs
 from the intended design. No startup configuration or boot partition changes.
 
-Result: pending staged transfer verification and capture.
+Result: verified with client source be4e205. Wallpaper SHA256 after upload matches
+the remotely rendered file. Applied through existing feh; screenshot retrieved in
+C and reviewed for private content. Public capture metadata: data/captures.tsv.
+
+Critical current boot regions backed up privately through bounded C range GET:
+boot0, boot1, LK, boot, recovery and primary GPT. Local hashes match device readback.
+This is not a full filesystem backup or a demonstrated early-firmware restore.

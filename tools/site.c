@@ -25,7 +25,7 @@ int main(void)
     failed |= records(docs, 1, 'H');
     failed |= ferror(input) || ferror(output) || ferror(docs);
     fclose(input); failed |= fclose(output) != 0; failed |= fclose(docs) != 0;
-    if (failed || feature_pages(NULL) || library_pages() || maps_generate()) return 1;
+    if (failed || feature_pages(NULL) || library_pages() || maps_generate() || gallery_generate()) return 1;
     puts("Site: generated feature pages, repository library, progress and SVG maps.");
     return 0;
 }

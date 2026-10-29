@@ -20,4 +20,6 @@ int markdown(FILE *input, FILE *output, const char *source_path);
 void inline_markdown(FILE *, const char *, const char *source_path);
 int graph_generate(const char *data_path, const char *svg_path, const char *title);
 int feature_graph(void);
+int gallery_entries(FILE *);
+int gallery_generate(void);
 #endif
