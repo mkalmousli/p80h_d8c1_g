@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 520" fill="none">
+<title>P80h boot manager concept</title>
+<desc>Original tablet illustration. Proposed interface, not a hardware screenshot.</desc>
+<g stroke="#2c373b"><path d="M18 90h40M18 90v340h40M388 90h34M422 90v340h-34"/><path d="M14 90h8M14 430h8M418 90h8M418 430h8"/></g>
+<rect x="77" y="20" width="286" height="478" rx="23" fill="#101416" stroke="#94a5a2"/>
+<rect x="84" y="27" width="272" height="464" rx="18" stroke="#2c373b"/>
+<circle cx="220" cy="42" r="3" stroke="#94a5a2"/>
+<rect x="96" y="62" width="248" height="400" rx="3" fill="#192024" stroke="#2c373b"/>
+<path d="M364 102v34M364 150v19" stroke="#94a5a2" stroke-width="3"/>
+<g font-family="monospace"><text x="115" y="92" fill="#83c7a6" font-size="9">[ p80h ]</text>
+<text x="115" y="138" fill="#dce5e3" font-size="20">Your next boot.</text>
+<text x="115" y="158" fill="#94a5a2" font-size="9">Choose a system to start.</text>
+<rect x="111" y="183" width="218" height="58" rx="3" fill="#101416" stroke="#83c7a6"/>
+<text x="123" y="206" fill="#83c7a6" font-size="12">› Alpine Linux</text>
+<text x="136" y="224" fill="#94a5a2" font-size="8">DEFAULT / NATIVE BOOT</text>
+<text x="123" y="271" fill="#dce5e3" font-size="11">Other systems</text>
+<text x="123" y="311" fill="#dce5e3" font-size="11">Recovery</text>
+<path d="M115 335h210" stroke="#2c373b"/>
+<text x="123" y="362" fill="#94a5a2" font-size="9">Settings</text>
+<text x="123" y="391" fill="#94a5a2" font-size="9">Diagnostics</text>
+<text x="115" y="444" fill="#83c7a6" font-size="8">POWER TO CHOOSE.</text>
+<text x="301" y="444" fill="#94a5a2" font-size="8">01</text>
+<text x="21" y="468" fill="#94a5a2" font-size="8">8 IN</text>
+<text x="372" y="468" fill="#94a5a2" font-size="8">A53</text></g>
+<path d="M207 480h26" stroke="#2c373b" stroke-linecap="round"/>
+</svg>

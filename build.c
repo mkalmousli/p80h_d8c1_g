@@ -1,0 +1,49 @@
+/* SPDX-License-Identifier: MIT */
+#include "tools/run.h"
+#include <string.h>
+#include <sys/stat.h>
+
+static int compile(const char *output, const char *a, const char *b,
+                   const char *c)
+{
+    char *args[] = {"cc", "-std=c11", "-O2", "-g", "-Wall", "-Wextra",
+        "-Werror", "-pedantic", "-I.", "-o", (char *)output,
+        (char *)a, (char *)b, (char *)c, NULL};
+    return run(args);
+}
+
+static int tools(void)
+{
+    return RUN("cc", "-std=c11", "-O2", "-g", "-Wall", "-Wextra", "-Werror",
+        "-pedantic", "-I.", "-o", "out/p80h", "tools/host.c", "tools/image.c",
+        "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c") ||
+        compile("out/policy", "tools/policy.c", NULL, NULL) ||
+        compile("out/sitegen", "tools/site.c", "tools/records.c", NULL) ||
+        compile("out/package", "tools/package.c", NULL, NULL);
+}
+
+int main(int argc, char **argv)
+{
+    const char *codespaces = getenv("CODESPACES");
+    const char *actions = getenv("GITHUB_ACTIONS");
+    const char *target = argc == 2 ? argv[1] : "help";
+    if (!strcmp(target, "help")) {
+        puts("Remote only: ./build {test|site|package|tools}");
+        return 0;
+    }
+    if ((!codespaces || strcmp(codespaces, "true")) &&
+        (!actions || strcmp(actions, "true"))) {
+        fputs("Builds run in Codespaces or Actions only.\n", stderr);
+        return 1;
+    }
+    if (strcmp(target, "test") && strcmp(target, "site") &&
+        strcmp(target, "package") && strcmp(target, "tools")) return 2;
+    if (mkdir("out", 0755) && errno != EEXIST) return 1;
+    if (tools() || RUN("out/policy")) return 1;
+    if (!strcmp(target, "tools")) return 0;
+    if (compile("out/test", "tests/main.c", "src/boot/menu.c", "tools/image.c") ||
+        RUN("out/test")) return 1;
+    if (RUN("out/sitegen")) return 1;
+    if (!strcmp(target, "package")) return RUN("out/package");
+    return 0;
+}

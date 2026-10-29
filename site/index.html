@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101416">
+<meta name="description" content="An open boot platform for the Teclast P80h. Native Alpine, small C tools, documented hardware research.">
+<title>P80h / own the boot</title>
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="wrap"><a class="brand" href="./"><img src="assets/mark.svg" width="28" height="28" alt="">p80h<span>/ open platform</span></a>
+<nav aria-label="Main"><a href="#progress">Progress</a><a href="#hardware">Hardware</a><a href="https://github.com/mkalmousli/p80h_d8c1_g">Source ↗</a></nav></header>
+<main id="main" class="wrap">
+<section class="hero" aria-labelledby="title">
+<div><p class="eyebrow">TECLAST P80h · MT8163 · OPEN RESEARCH</p>
+<h1 id="title">Small tablet.<br>Open possibilities.</h1>
+<p class="intro">A quieter path from silicon to Alpine.<br>Our boot manager. Native Linux. Every step documented.</p>
+<div class="actions"><a class="button" href="#progress">Follow the bring-up <span aria-hidden="true">↓</span></a><a href="https://github.com/mkalmousli/p80h_d8c1_g/tree/main/docs">Read the field notes ↗</a></div>
+<p class="annotation"><span class="dot" aria-hidden="true"></span> Foundation stage / no flashable firmware release yet</p></div>
+<figure><img class="tablet" src="assets/tablet.svg" width="440" height="520" alt="Original line drawing of the P80h showing a proposed Alpine boot menu."><figcaption>01 / boot-manager concept · original SVG · not a device screenshot</figcaption></figure>
+</section>
+<div class="specs" aria-label="Device specifications"><span><b>MT8163</b> MediaTek</span><span><b>4 × A53</b> ARM64</span><span><b>8 inch</b> 800 × 1280</span><span><b>Alpine</b> target OS</span></div>
+<section aria-labelledby="chain-title"><div class="section-title"><p class="eyebrow">01 / ARCHITECTURE</p><h2 id="chain-title">From power to possibility.</h2></div>
+<img class="chain" src="assets/boot-chain.svg" width="1040" height="220" alt="Immutable Boot ROM leads to planned open initialization, then a boot manager selecting Alpine, Linux, Android or recovery.">
+<p class="small">The silicon Boot ROM stays immutable. Writable firmware stages are research targets. Direct OS boot; no kexec.</p></section>
+<section id="progress" aria-labelledby="progress-title"><div class="section-title"><p class="eyebrow">02 / FIELD WORK</p><h2 id="progress-title">Evidence before checkmarks.</h2><p>Implemented means code exists. Verified means the stated behavior was observed.</p></div>
+<ol class="milestones">
+{{milestones}}
+</ol></section>
+<section id="hardware" aria-labelledby="hardware-title"><div class="section-title"><p class="eyebrow">03 / THE DEVICE</p><h2 id="hardware-title">One subsystem at a time.</h2><p>Historical results are leads. This table records the new project's evidence.</p></div>
+<div class="table-scroll"><table><caption class="sr-only">Current hardware support and evidence</caption><thead><tr><th scope="col">Subsystem</th><th scope="col">State</th><th scope="col">Evidence / next gate</th></tr></thead><tbody>
+{{hardware}}
+</tbody></table></div></section>
+<section class="evidence" aria-labelledby="evidence-title"><div><p class="eyebrow">04 / VISUAL LOG</p><h2 id="evidence-title">Show the real thing.</h2><p>Real screenshots will appear with run IDs and source revisions after capture and privacy review. The illustration above is a design concept.</p></div><div class="terminal" role="img" aria-label="Project goals: native boot, auditable sources, no device identifiers in releases"><p><span>›</span> native boot</p><p><span>›</span> auditable sources</p><p><span>›</span> identity-free releases</p></div></section>
+<section class="download" aria-labelledby="download-title"><div><p class="eyebrow">05 / BUILD IT IN THE OPEN</p><h2 id="download-title">Sources first. Artifacts with context.</h2><p>Experimental host tools are separate from tablet firmware. No proprietary firmware or stock images are distributed.</p></div><a class="button" href="https://github.com/mkalmousli/p80h_d8c1_g/releases">Releases & checksums ↗</a></section>
+</main>
+<footer class="wrap"><span>p80h / a little machine, understood.</span><a href="https://github.com/mkalmousli/p80h_d8c1_g/blob/main/LICENSE">Code & original artwork / MIT</a></footer>
+</body>
+</html>

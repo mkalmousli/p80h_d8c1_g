@@ -1,0 +1,11 @@
+/* SPDX-License-Identifier: MIT */
+#ifndef P80H_NET_H
+#define P80H_NET_H
+#include <stddef.h>
+#include <sys/types.h>
+int daemon_open(const char *header);
+int net_send(int fd, const void *data, size_t size);
+ssize_t net_read(int fd, void *data, size_t size);
+int daemon_command(const char *command);
+int daemon_get(const char *remote, const char *local);
+#endif

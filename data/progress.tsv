@@ -1,0 +1,15 @@
+# kind|id|title|state|detail
+M|01|Remote foundation|implemented|C tools, dual Codespaces, original SVG identity; remote checks pending.
+M|02|Device access and recovery|implemented|Existing daemon reached; C transport and fresh recovery audit next.
+M|03|Open hardware initialization|planned|DRAM, security state and writable boot stages need specifications.
+M|04|Native boot manager|implemented|Portable menu policy exists; board loader and rendering not implemented.
+M|05|Mainline hardware support|planned|Historical support must be reverified with pinned upstream sources.
+M|06|Alpine by default|planned|Native boot, reliable storage and independent recovery are release gates.
+H|soc|MT8163 / Cortex-A53|verified|Live aarch64 and device-tree model observed through existing daemon.
+H|usb|USB device transport|verified|Existing p80h daemon responds on the connected tablet.
+H|storage|eMMC / microSD|planned|Fresh integrity tests and complete private backup required.
+H|display|Display / touch / keys|planned|Framebuffer geometry observed; end-to-end tests pending.
+H|power|Power / charging / suspend|planned|Battery telemetry and safe charge behavior need verification.
+H|radio|Wi-Fi / Bluetooth|blocked|Strict FOSS firmware path has not been established.
+H|graphics|GPU / video|blocked|Open hardware specifications and driver path not established.
+H|media|Audio / cameras / sensors|planned|Identify and verify each physical component independently.

@@ -12,9 +12,10 @@ Change: new independent repository; no old source or device images imported.
 
 Verification: pending remote builds, parser/menu tests, source policy and site checks.
 
-Hardware: no connection established; no writes performed. Historical private
-backups contain boot/identity regions but no stock `system` image. Exact matching
-stock firmware and a fresh complete backup are required before factory reset.
+Hardware: existing CLI reaches the installed daemon; live aarch64 and MT8163 model
+observed. Existing kernel reports 6.12.99-p80h-dirty. No partition writes performed.
+Owner cancelled stock restoration: preserve current installation and continue.
+Fresh backups and independent recovery are required before boot-stage changes.
 
 ## Required experiment record
 
