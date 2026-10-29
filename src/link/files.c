@@ -27,7 +27,7 @@ int serve_get(const struct wire_message *request, struct wire_message *reply)
     int result = WIRE_IO;
     if (fstat(fd, &st)) goto done;
     if (S_ISREG(st.st_mode) && st.st_size >= 0) total = (uint64_t)st.st_size;
-    else if (!S_ISBLK(st.st_mode) || ioctl(fd, LINK_BLKGETSIZE64, &total)) goto done;
+    else if (!S_ISBLK(st.st_mode) || ioctl(fd, (int)LINK_BLKGETSIZE64, &total)) goto done;
     if (offset > total || total > INT64_MAX) { result = WIRE_INVALID; goto done; }
     if (limit > total - offset) limit = (uint32_t)(total - offset);
     reply->body = malloc((size_t)limit + 8);
