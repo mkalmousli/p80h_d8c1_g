@@ -68,6 +68,21 @@ power domains, pin groups, regulators, chosen boot contract, RAM reservations,
 panel timing, touch firmware provenance and storage boot policy. The observed
 tree is not a substitute for those checks or for independent recovery.
 
+Exact shared-family matches were confirmed in the pinned Linux 7.3 source:
+
+| Runtime compatible | Candidate source match |
+|---|---|
+| mediatek,mt8173-i2c | drivers/i2c/busses/i2c-mt65xx.c |
+| mediatek,mt2701-mmc | drivers/mmc/host/mtk-sd.c |
+| mediatek,mt8173-dsi | drivers/gpu/drm/mediatek/mtk_dsi.c |
+| mediatek,mt8173-disp-aal | drivers/gpu/drm/mediatek/mtk_disp_aal.c |
+| mediatek,mt8173-pwrap | drivers/soc/mediatek/mtk-pmic-wrap.c |
+| mediatek,mt6589-wdt | drivers/watchdog/mtk_wdt.c |
+
+These exact strings select upstream driver data, but they do not verify the
+P80h register layout, clocks, power sequencing, interrupts or stability. Each
+candidate needs per-controller review and hardware acceptance before DTS use.
+
 The three populated I2C compatibles observed were `silead,gsl1680` at bus 0
 address `0x40`, `ti,bq24156` charger at bus 0 address `0x6a`, and
 `miramems,da280` at bus 2 address `0x26`. The charger compatible differs from a
