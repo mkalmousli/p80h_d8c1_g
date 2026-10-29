@@ -63,6 +63,18 @@ match the verified private backups. Result: pending live ROM/preloader observati
 Warm reboot: existing daemon returned on the same installed kernel; no successful
 ROM session was observed. Owner-assisted physical entry is the next bounded test.
 
+## 2026-10-29T19:55:00Z / 006 / bounded preloader watchdog reset
+
+Hypothesis: after the identity-free MT8163 query, a C-only reset command using
+the documented MT8163 watchdog registers will leave preloader and return Linux.
+Falsifier: bad echo/status, protected-memory flags, no USB reset request, or the
+existing daemon fails to return within 60 seconds.
+
+Change: allow only watchdog MODE/SWRST accesses; no caller-supplied addresses,
+flash commands, identity queries or persistent writes. Owner is ready to use the
+existing button menu as a physical fallback. Recovery is verified only when the
+original daemon responds again.
+
 ## 2026-10-29T19:28:18Z / 003 / upstream audit result
 
 Official kernel.org archive hash matched its published checksum. ARM64 tinyconfig

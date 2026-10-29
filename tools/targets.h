@@ -7,7 +7,7 @@
     "src/link/files.c", "src/link/upload.c"
 #define CLIENT_SOURCES "tools/link-session.c", "tools/link-cli.c", \
     "tools/link-download.c", "tools/link-upload.c"
-#define ROM_SOURCES "src/rom/descriptors.c", "src/rom/probe.c"
+#define ROM_SOURCES "src/rom/descriptors.c", "src/rom/probe.c", "src/rom/reset.c"
 
 /* A single compiler contract for host tools, tests and static device binaries. */
 static int compile_sources(const char *cc, const char *output, int standalone,
@@ -54,6 +54,7 @@ static int build_tests(void)
         BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test") ||
         BUILD("out/link-transfer-test", "tests/link-transfer.c", "tools/link-session.c", "tools/net.c",
             "tools/link-download.c", "tools/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test") ||
-        BUILD("out/rom-test", "tests/rom.c", ROM_SOURCES) || RUN("out/rom-test");
+        BUILD("out/rom-test", "tests/rom.c", ROM_SOURCES) || RUN("out/rom-test") ||
+        BUILD("out/rom-reset-test", "tests/rom-reset.c", "src/rom/reset.c") || RUN("out/rom-reset-test");
 }
 #endif
