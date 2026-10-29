@@ -2,6 +2,7 @@
 #define _POSIX_C_SOURCE 200809L
 #include "run.h"
 #include <sys/stat.h>
+#include <string.h>
 
 #define MUSL_ARCHIVE "https://musl.libc.org/releases/musl-1.2.5.tar.gz"
 #define MUSL_SHA256 "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4"
