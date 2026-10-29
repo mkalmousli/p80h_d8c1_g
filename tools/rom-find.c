@@ -25,7 +25,7 @@ int rom_usb_open(struct rom_endpoint *endpoints)
     DIR *d = opendir("/sys/bus/usb/devices");
     struct dirent *e;
     char path[128] = {0};
-    unsigned count = 0;
+    unsigned count = 0, selected_pid = 0;
     if (!d) return -1;
     while ((e = readdir(d))) {
         if (e->d_name[0] == '.' || strchr(e->d_name, ':')) continue;
@@ -33,7 +33,7 @@ int rom_usb_open(struct rom_endpoint *endpoints)
         if (vendor != 0x0e8d || (pid != 0x0003 && pid != 0x2000)) continue;
         unsigned bus = number(e->d_name, "busnum", 10), device = number(e->d_name, "devnum", 10);
         if (!bus || !device || bus > 999 || device > 999) continue;
-        count++; snprintf(path, sizeof(path), "/dev/bus/usb/%03u/%03u", bus, device);
+        count++; selected_pid = pid; snprintf(path, sizeof(path), "/dev/bus/usb/%03u/%03u", bus, device);
     }
     closedir(d);
     if (count != 1) {
@@ -41,6 +41,7 @@ int rom_usb_open(struct rom_endpoint *endpoints)
         if (count) fputs("Ambiguous MTK ROM/preloader devices; refusing to select one.\n", stderr);
         return -1;
     }
+    fprintf(stderr, "MTK USB candidate 0e8d:%04x; initializing bulk transport.\n", selected_pid);
     int fd = open(path, O_RDWR | O_CLOEXEC);
     if (fd < 0) { perror("ROM USB access"); return -1; }
     if (rom_usb_claim(fd, endpoints)) { rom_usb_close(fd, endpoints); return -1; }

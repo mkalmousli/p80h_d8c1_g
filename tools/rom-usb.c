@@ -14,12 +14,15 @@ int rom_usb_claim(int fd, struct rom_endpoint *out)
     struct usbdevfs_ctrltransfer get = {.bRequestType = 0x80, .bRequest = 6,
         .wValue = 0x200, .wLength = 9, .timeout = 1000, .data = config};
     int size = ioctl(fd, USBDEVFS_CONTROL, &get);
-    if (size != 9) return 1;
+    if (size != 9) { fprintf(stderr, "ROM config header read failed: bytes=%d errno=%d\n", size, errno); return 1; }
     unsigned total = config[2] | (unsigned)config[3] << 8;
-    if (total < 9 || total > sizeof(config)) return 1;
+    if (total < 9 || total > sizeof(config)) { fprintf(stderr, "ROM config length invalid: %u\n", total); return 1; }
     get.wLength = (unsigned short)total;
     size = ioctl(fd, USBDEVFS_CONTROL, &get);
-    if (size != (int)total || rom_descriptors(config, (size_t)size, out)) return 1;
+    if (size != (int)total || rom_descriptors(config, (size_t)size, out)) {
+        fprintf(stderr, "ROM bulk descriptor discovery failed: bytes=%d expected=%u errno=%d\n", size, total, errno);
+        return 1;
+    }
     unsigned interface = out->interface;
     if (ioctl(fd, USBDEVFS_CLAIMINTERFACE, &interface)) {
         struct usbdevfs_disconnect_claim claim = {.interface = interface};

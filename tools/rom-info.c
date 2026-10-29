@@ -26,7 +26,7 @@ int rom_info_cli(int wait)
                 return 0;
             }
             if (info.chip && info.chip != 0x8163) return 1;
-        } else if (errno != ENODEV) return 1;
+        } else if (errno == EACCES || errno == EPERM || errno == EEXIST) return 1;
         if (!wait) break;
         nanosleep(&pause, NULL); clock_gettime(CLOCK_MONOTONIC, &now);
     } while (now.tv_sec - start.tv_sec < 60);
