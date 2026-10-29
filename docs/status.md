@@ -89,3 +89,10 @@ The installed device tree declares `teclast,p80h` / `mediatek,mt8163` and 39
 SoC child compatibles. The inventory is recorded without raw DTB or unique
 properties. Exact MT8163 driver/binding matches were absent in the pinned 7.3
 audit; shared-family strings remain candidates, not accepted support.
+
+## 2026-10-29T20:27:09Z / 010 / temporary agent cleanup
+
+Hypothesis: deleting the uploaded `/tmp` copy after launching the agent from
+`/run` preserves P80H/1 service and leaves no staged agent in rootfs. Falsifier:
+service ping fails or the file remains. Change: remove only that named temp copy;
+no boot or partition target is involved.
