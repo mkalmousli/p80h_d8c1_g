@@ -74,4 +74,9 @@ Remote C tests passed. A 4 MiB pipelined boot-region read matched the existing
 backup byte for byte. During sustained pipelined reads, transfer speed fell below
 2 MiB/s and both USB services became briefly unavailable. Stopping the client
 restored them; the partial local file was retained. The speed hypothesis is
-rejected. Keep the window at one request and test explicit resume sequentially.
+rejected. Keep the window at one request.
+
+The sequential client with explicit resume passed remote C checks. A fresh 4 MiB
+boot0 read matched the earlier backup exactly in about four seconds. The 7.75 GiB
+private user-area image resumed from its retained partial file; transfer remains
+in progress and the mounted filesystem prevents a coherent snapshot claim.

@@ -14,3 +14,12 @@ until host integration tests, a remote static ARM64 build and live USB checks pa
 This is a migration strategy, not an excuse to claim compatibility without tests.
 
 Read [the protocol contract](../protocol.md) for wire offsets and failure behavior.
+
+## 2026-10-29T20:11Z / Safe resume over a serial window
+
+A four-request read window passed the mock round trip and matched a 4 MiB
+boot-region backup. Sustained USB traffic then stalled both temporary and legacy
+services. Closing that client restored them, but the speed hypothesis failed.
+The committed client keeps one GET in flight and can explicitly resume an
+existing partial file. Remote checks pass; a serial 4 MiB boot0 read matches the
+previous backup. The live user-area image remains a private, incomplete read.

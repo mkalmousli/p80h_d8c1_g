@@ -20,12 +20,12 @@ different hardware. Never describe the current installation as fully free.
 
 | Area | Implemented / observed | Unresolved problem |
 |---|---|---|
-| Host tooling | C transport, image/GPT inspection, private critical backups | Binary endpoint migration needs live acceptance |
+| Host tooling | C usbfs probe, binary P80H/1 client, GPT validation, private boot backups | Binary server is temporary; complete source-to-file hash/readback acceptance remains incomplete |
 | Boot manager | Tested portable policy and ARM64 bounds checks | No board renderer, filesystem loader or native handoff |
-| Early boot | Current writable stages retained | DRAM, power and security interfaces lack complete free specs |
-| Kernel | Existing device runs 6.12.99-p80h-dirty | New upstream audit fetch stalled / archive rate-limited |
+| Early boot | MT8163 preloader query and restricted watchdog return tested | DRAM, power and security interfaces lack complete free specs; no replacement stage |
+| Kernel | Existing device runs 6.12.99-p80h-dirty; Linux 7.3 ARM64 tinyconfig builds remotely | Generic image only; no MT8163 DTS or controller support found in audited paths |
 | Factory evidence | Archived /proc/version: Linux 3.10.72, GCC 4.9.x | No archived stock 4.x kernel record found in checked logs |
-| Storage | eMMC enumerates; primary GPT validates | Complete consistent backup and independent restore unproven |
+| Storage | eMMC enumerates; primary GPT validates; private raw user-area read in progress | Live read is not coherent; full backup, hash comparison and independent restore unproven |
 | Battery | Charging / about 3.53 V / 0 percent reported | Telemetry accuracy and safe full charge cycle unverified |
 | Radios / touch | Drivers bind in existing installation | Free required firmware provenance is not established |
 | Graphics | Existing desktop screenshot captured | GPU acceleration and video support lack an accepted open path |

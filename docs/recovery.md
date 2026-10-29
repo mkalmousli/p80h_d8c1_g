@@ -18,8 +18,17 @@ the historical watchdog fallback applies to a new boot chain. Never publish dump
 ## Current blockers
 
 - Historical backup images are not a fresh complete backup.
-- Recovery after replacement of early firmware has not been demonstrated.
+- A raw user-area read is in progress; it is live and cannot certify a coherent filesystem snapshot.
+- The watchdog reset returned the existing Linux installation through the observed MTK boot path.
+- Recovery after replacement of early firmware has not been demonstrated independently.
 - No flashable new firmware is provided by this project yet.
 
+The identity-free C ROM probe and restricted watchdog reset were exercised on
+the tablet. A stale preloader enumeration failed; choosing Normal in the boot
+menu restored Linux. A fresh timed probe then read MT8163/security state, sent
+only the documented watchdog MODE/SWRST writes, observed brief `0e8d:0003`
+enumeration, and confirmed the existing daemon returned. This validates a
+controlled return path, not recovery from overwritten storage or firmware.
+
 Read-only inspection and the existing daemon remain the first access path.
-Continue using old tooling only for transport functions not yet replaced in C.
+The new binary service is temporary in RAM and must be relaunched after reboot.
