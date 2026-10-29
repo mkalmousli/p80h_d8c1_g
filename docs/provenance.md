@@ -6,6 +6,7 @@
 | SVG artwork | Original hand-authored vectors | MIT |
 | Existing tablet daemon | Prior installation, not imported | Transitional external protocol |
 | Old driver findings | Historical research leads | Must be independently verified |
+| ROM query facts | FOSS mtkclient protocol reference | Independent C implementation; no copied vendor code |
 | Linux / Alpine | Not fetched or packaged yet | Preserve upstream licenses |
 | Build environment | Codespaces Ubuntu image / Actions Ubuntu runner | External tooling |
 

@@ -7,6 +7,7 @@
     "src/link/files.c", "src/link/upload.c"
 #define CLIENT_SOURCES "tools/link-session.c", "tools/link-cli.c", \
     "tools/link-download.c", "tools/link-upload.c"
+#define ROM_SOURCES "src/rom/descriptors.c", "src/rom/probe.c"
 
 /* A single compiler contract for host tools, tests and static device binaries. */
 static int compile_sources(const char *cc, const char *output, int standalone,
@@ -30,7 +31,8 @@ static int build_tools(void)
 {
     return BUILD("out/p80h", "tools/entry.c", "tools/host.c", "tools/image.c",
         "tools/usb.c", "tools/net.c", "tools/command.c", "tools/get.c", "tools/put.c",
-        "tools/gpt.c", "tools/gpt-cli.c", CLIENT_SOURCES, WIRE_SOURCES) ||
+        "tools/gpt.c", "tools/gpt-cli.c", "tools/rom-find.c", "tools/rom-usb.c", "tools/rom-info.c",
+        ROM_SOURCES, CLIENT_SOURCES, WIRE_SOURCES) ||
         BUILD("out/policy", "tools/policy.c") ||
         BUILD("out/sitegen", "tools/site.c", "tools/records.c", "tools/table.c",
             "tools/html.c", "tools/inline.c", "tools/markdown.c", "tools/library.c",
@@ -51,6 +53,7 @@ static int build_tests(void)
             "tools/inline.c", "tools/markdown.c", "tools/graph-data.c") || RUN("out/web-test") ||
         BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test") ||
         BUILD("out/link-transfer-test", "tests/link-transfer.c", "tools/link-session.c", "tools/net.c",
-            "tools/link-download.c", "tools/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test");
+            "tools/link-download.c", "tools/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test") ||
+        BUILD("out/rom-test", "tests/rom.c", ROM_SOURCES) || RUN("out/rom-test");
 }
 #endif

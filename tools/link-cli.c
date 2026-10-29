@@ -21,7 +21,7 @@ int link_cli(int argc, char **argv)
     } else if (argc == 4 && (!strcmp(argv[1], "get") || !strcmp(argv[1], "put"))) op = WIRE_GET;
     else {
         puts("p80h P80H/1: ping | status | sh 'COMMAND' | get REMOTE LOCAL | put LOCAL /tmp/p80h-NAME\n"
-             "Local: usb | inspect IMAGE | gpt SNAPSHOT\nTransitional text endpoint: p80h legacy COMMAND");
+             "Local: usb | inspect IMAGE | gpt SNAPSHOT | rom-info\nTransitional text endpoint: p80h legacy COMMAND");
         return argc == 1 ? 0 : 2;
     }
     struct link_session session;
