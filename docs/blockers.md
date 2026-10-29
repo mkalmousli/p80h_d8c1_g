@@ -48,15 +48,19 @@ rendering is not GPU acceptance; a display screenshot is not video/camera suppor
 
 ## B07 / Battery and system power
 
-The running device reports charging at about 3.53 V and 0 percent. That is not
-accepted capacity telemetry. Compare with measured hardware, verify limits and
-termination, and test repeated suspend/resume before claiming reliable power support.
+The initial reading was about 3.53 V at 0 percent; after charging, P80H/1 reported
+about 3.86 V and 49 percent. Neither report is calibrated. The runtime tree declares
+`ti,bq24156`, while a historical survey identifies a FAN5405 family part. Confirm
+the physical charger/gauge, compare with measured hardware, verify charge limits
+and termination, and test suspend/resume before claiming reliable power support.
 
 ## B08 / Binary transport migration
 
-New host and server need wire-level integration tests, remote ARM64 cross-build,
-live USB round trips, chunked transfer hashes and failure cleanup checks. Keep
-the legacy daemon until these pass. A binary header alone is not a protocol test.
+The C host and static ARM64 server pass wire-level tests and live USB round trips;
+boot-region reads match prior verified copies. The one-in-flight 64 KiB client is
+the accepted transfer path. A four-request window stalled USB services and was
+reverted. The server runs from RAM and must be relaunched after reboot; the full
+live user-area read is incomplete. Keep the legacy daemon for recovery operations.
 
 ## B09 / Native menu and loader
 

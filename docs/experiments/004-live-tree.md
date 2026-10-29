@@ -67,3 +67,9 @@ public DTS, recover and verify address/size cells, interrupts, clocks, resets,
 power domains, pin groups, regulators, chosen boot contract, RAM reservations,
 panel timing, touch firmware provenance and storage boot policy. The observed
 tree is not a substitute for those checks or for independent recovery.
+
+The three populated I2C compatibles observed were `silead,gsl1680` at bus 0
+address `0x40`, `ti,bq24156` charger at bus 0 address `0x6a`, and
+`miramems,da280` at bus 2 address `0x26`. The charger compatible differs from a
+historical FAN5405-family survey; the physical chip identity is unresolved.
+These declarations do not verify firmware availability or driver behavior.
