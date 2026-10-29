@@ -23,12 +23,12 @@ int rom_probe(struct rom_transport *t, struct rom_information *info)
         if (t->transfer(t->context, 1, &byte, 1) || t->transfer(t->context, 0, reply, 1) ||
             reply[0] != (unsigned char)(sync[i] ^ 0xffU)) return 1;
     }
-    if (query(t, 0xfd, reply, 4)) return 1;
+    if (query(t, 0xfd, reply, 4)) return 2;
     info->chip = u16(reply); info->hardware = u16(reply + 2);
-    if (info->chip != 0x8163) return 1;
-    if (query(t, 0xfc, reply, 8) || u16(reply + 6)) return 1;
+    if (info->chip != 0x8163) return 3;
+    if (query(t, 0xfc, reply, 8) || u16(reply + 6)) return 4;
     info->subcode = u16(reply); info->software = u16(reply + 4);
-    if (query(t, 0xd8, reply, 6) || u16(reply + 4)) return 1;
+    if (query(t, 0xd8, reply, 6) || u16(reply + 4)) return 5;
     info->config = u32(reply);
     return 0;
 }

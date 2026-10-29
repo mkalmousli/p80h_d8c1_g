@@ -25,6 +25,7 @@ int rom_info_cli(int wait)
                        !!(info.config & 1), !!(info.config & 2), !!(info.config & 4));
                 return 0;
             }
+            fprintf(stderr, "ROM query incomplete: stage=%d chip=%04x\n", failed, info.chip);
             if (info.chip && info.chip != 0x8163) return 1;
         } else if (errno == EACCES || errno == EPERM || errno == EEXIST) return 1;
         if (!wait) break;

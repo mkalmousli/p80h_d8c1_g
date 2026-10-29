@@ -46,7 +46,10 @@ int rom_usb_transfer(void *context, int writing, unsigned char *data, size_t siz
             .len = (unsigned)size, .timeout = 1000, .data = data};
         int n = ioctl(usb->fd, USBDEVFS_BULK, &bulk);
         if (n < 0 && errno == EINTR) continue;
-        if (n <= 0 || (size_t)n > size) return 1;
+        if (n <= 0 || (size_t)n > size) {
+            fprintf(stderr, "ROM bulk %s failed: endpoint=%02x bytes=%d errno=%d\n",
+                    writing ? "write" : "read", bulk.ep, n, errno); return 1;
+        }
         size -= (size_t)n; data += n;
     }
     return 0;
