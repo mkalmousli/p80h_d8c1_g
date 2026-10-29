@@ -4,6 +4,7 @@ An open boot platform for the Teclast P80h (MT8163).
 Native Alpine. Small C tools. Original artwork. Measured hardware support.
 
 [Device & progress](https://mkalmousli.github.io/p80h_d8c1_g/) ·
+[Roadmap](docs/plan.md) · [Specification](docs/specification.md) ·
 [Architecture](docs/architecture.md) · [Recovery](docs/recovery.md) ·
 [Remote development](docs/development.md) · [Bring-up log](docs/status.md)
 
