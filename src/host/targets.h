@@ -32,7 +32,7 @@ static int build_host(void)
     return BUILD("out/p80h", "src/host/entry.c", "src/host/host.c", "src/host/image.c",
         "src/host/usb.c", "src/host/net.c", "src/host/command.c", "src/host/get.c", "src/host/put.c",
         "src/host/gpt.c", "src/host/gpt-cli.c", "src/host/rom-find.c", "src/host/rom-usb.c", "src/host/rom-info.c",
-        ROM_SOURCES, CLIENT_SOURCES, WIRE_SOURCES, "src/device/features.c") ||
+        ROM_SOURCES, CLIENT_SOURCES, WIRE_SOURCES) ||
         BUILD("out/policy", "src/host/policy.c") ||
         BUILD("out/package", "src/host/package.c");
 }

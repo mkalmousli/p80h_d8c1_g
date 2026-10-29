@@ -22,7 +22,7 @@ int link_cli(int argc, char **argv)
                              !strcmp(argv[1], "put"))) op = WIRE_GET;
     else {
         puts("p80h: ping | status | sh 'COMMAND' | get/resume REMOTE LOCAL | put LOCAL /tmp/p80h-NAME\n"
-             "Local: features | usb | inspect IMAGE | gpt SNAPSHOT | rom-info | rom-reset\n"
+             "Local: usb | inspect IMAGE | gpt SNAPSHOT | rom-info | rom-reset\n"
              "Transitional text endpoint: p80h legacy COMMAND");
         return argc == 1 ? 0 : 2;
     }
