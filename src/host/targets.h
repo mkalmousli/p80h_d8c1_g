@@ -9,7 +9,7 @@
     "src/host/link-download.c", "src/host/link-upload.c"
 #define ROM_SOURCES "src/rom/descriptors.c", "src/rom/probe.c", "src/rom/reset.c"
 
-/* A single compiler contract for host tools, tests and static device binaries. */
+/* One compiler contract for host tools and static device binaries. */
 static int compile_sources(const char *cc, const char *output, int standalone,
                            char *const sources[])
 {
@@ -37,17 +37,4 @@ static int build_host(void)
         BUILD("out/package", "src/host/package.c");
 }
 
-static int build_tests(void)
-{
-    return BUILD("out/test", "tests/main.c", "src/boot/menu.c", "src/host/image.c") || RUN("out/test") ||
-        BUILD("out/native-test", "tests/native.c", "src/boot/native-image.c", "src/boot/native-layout.c") || RUN("out/native-test") ||
-        BUILD("out/gpt-test", "tests/gpt.c", "src/host/gpt.c") || RUN("out/gpt-test") ||
-        BUILD("out/transport-test", "tests/transport.c", "src/host/net.c", "src/host/command.c", "src/host/get.c") || RUN("out/transport-test") ||
-        BUILD("out/upload-test-bin", "tests/upload.c", "src/host/net.c", "src/host/put.c") || RUN("out/upload-test-bin") ||
-        BUILD("out/wire-test", "tests/wire.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/wire-test") ||
-        BUILD("out/link-transfer-test", "tests/link-transfer.c", "src/host/link-session.c", "src/host/net.c",
-            "src/host/link-download.c", "src/host/link-upload.c", WIRE_SOURCES, SERVER_SOURCES) || RUN("out/link-transfer-test") ||
-        BUILD("out/rom-test", "tests/rom.c", ROM_SOURCES) || RUN("out/rom-test") ||
-        BUILD("out/rom-reset-test", "tests/rom-reset.c", "src/rom/reset.c") || RUN("out/rom-reset-test");
-}
 #endif

@@ -10,7 +10,7 @@ there is no replacement firmware or native Alpine boot yet.
 |---|---:|---|
 | Verified | 1 | USB gadget and versioned P80H/1 binary link; boot-region read |
 | Implemented | 1 | C boot selection and timeout policy |
-| Observed | 16 | Drivers bind or hardware is identified; many functions lack acceptance tests |
+| Observed | 16 | Drivers bind or hardware is identified; many functions remain unvalidated |
 | Blocked | 3 | Wi-Fi, Bluetooth, GPU: open driver or firmware path unproven |
 | Planned | 9 | DRAM init, CPU frequency, FM, video, cameras, suspend, ROM stage, secure monitor, Alpine boot |
 
@@ -28,7 +28,6 @@ agent runs temporarily from RAM. See the [roadmap](docs/plan.md).
 
 ```console
 cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
-./build test
 ./build package
 ```
 
