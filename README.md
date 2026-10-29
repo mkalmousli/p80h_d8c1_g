@@ -1,14 +1,11 @@
 # P80h · Teclast MT8163
 
-Goal: boot Alpine directly from a native C boot manager, with no kexec. The
-installed tablet system is preserved. There is no replacement boot firmware or
-native Alpine boot yet.
+Goal: boot Alpine directly through a native C boot manager without kexec; the installed system remains, with no replacement firmware or native Alpine boot yet.
 
 ## Boot path
 
-The left side is the tablet today. The right side is the intended open path.
-The mask ROM is code fixed in silicon; project work can replace writable stages
-that run after it.
+Left: tablet today. Right: intended open path. The mask ROM is fixed in silicon;
+project work can replace writable stages that run after it.
 
 ```mermaid
 flowchart TD
@@ -22,10 +19,9 @@ flowchart TD
 
 ## Project connection
 
-The host CLI and tablet agent are C. The agent is uploaded to RAM in the
-existing Linux session; it is temporary and does not change a boot partition.
-P80H/1 is a versioned binary protocol over USB networking. Downloads are bounded
-and checksummed; uploads are restricted to `/tmp/p80h-*` staging paths.
+The C host CLI uploads a temporary C agent into RAM under the installed Linux.
+P80H/1 is a versioned binary protocol over USB networking; downloads are bounded
+and checksummed, and uploads only use `/tmp/p80h-*` staging paths.
 
 ```mermaid
 flowchart LR
@@ -36,9 +32,8 @@ flowchart LR
 
 ## Bring-up steps
 
-1. **Preserve:** GPT and critical boot copies are verified. A live private eMMC
-   read is incomplete and is not a coherent backup or restore proof. No boot
-   partition has been changed.
+1. **Preserve:** GPT/critical boot copies are verified. The live private eMMC read
+   is incomplete and not a coherent backup or restore proof; no boot was changed.
 2. **Prove hardware:** bind the mainline drivers below and validate their real
    functions, firmware and power behavior.
 3. **Replace writable stages:** implement early memory setup and a recoverable
@@ -88,20 +83,18 @@ end-to-end check. `Blocked` means no usable open driver/firmware path is proven.
 
 ## Write gate
 
-Do not write boot or storage partitions until the private backup is complete, an
-independent restore route is proven, a RAM-only candidate works, and rollback is
-defined. The watchdog return above used the installed boot chain.
+Do not write boot/storage until the private backup and independent restore route
+are verified, a RAM-only candidate works, and rollback is defined. The watchdog
+return above used the installed boot chain.
 
 ## Build
 
-The C host CLI is in [`src/host/`](src/host/); the device link agent is in
-[`src/link/`](src/link/). Build entry point:
+Host CLI: [`src/host/`](src/host/). Device agent: [`src/link/`](src/link/).
+Build entry point:
 
 ```console
-cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build
-./build package
+cc -std=c11 -Wall -Wextra -Werror -pedantic build.c -o build && ./build package
 ```
 
-Authored code is C, at most 100 lines per file. Raw dumps, credentials,
-calibration and device-specific data stay in ignored `local/` and never enter
-public artifacts.
+Authored code is C (100 lines max per file). Raw dumps, credentials, calibration
+and device-specific data stay in ignored `local/`, outside public artifacts.
